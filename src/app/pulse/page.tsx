@@ -23,9 +23,9 @@ interface PulseData {
 }
 
 const SOURCE_CONFIG = {
+  reddit:  { label: 'Reddit',  icon: '⚽', color: '#ff4500' },
   news:    { label: 'News',    icon: '📰', color: '#3b82f6' },
-  reddit:  { label: 'Reddit', icon: '🤖', color: '#ff4500' },
-  bluesky: { label: 'Bluesky',icon: '🦋', color: '#0085ff' },
+  bluesky: { label: 'Bluesky', icon: '🦋', color: '#0085ff' },
 }
 
 function timeAgo(iso: string): string {
@@ -42,7 +42,7 @@ function timeAgo(iso: string): string {
 export default function PulsePage() {
   const [data, setData]       = useState<PulseData | null>(null)
   const [loading, setLoading] = useState(true)
-  const [filter, setFilter]   = useState<'all' | 'news' | 'reddit' | 'bluesky'>('all')
+  const [filter, setFilter]   = useState<'all' | 'reddit' | 'news' | 'bluesky'>('all')
 
   useEffect(() => {
     async function load() {
@@ -93,9 +93,27 @@ export default function PulsePage() {
               gap: 8, marginBottom: 16,
             }}>
               {[
-                { label: '🔥 Hype',   value: data.sentiment.hype,   color: '#f59e0b' },
-                { label: '💬 Debate', value: data.sentiment.debate, color: '#6366f1' },
-                { label: '😱 Drama',  value: data.sentiment.drama,  color: '#ef4444' },
+                { 
+                  icon: '⚽', 
+                  value: String(data.counts.reddit), 
+                  label: 'Reddit posts', 
+                  sublabel: 'r/worldcup · r/soccer',
+                  color: '#ff4500' 
+                },
+                { 
+                  icon: '📰', 
+                  value: String(data.counts.news), 
+                  label: 'News articles', 
+                  sublabel: 'football-specific',
+                  color: '#3b82f6' 
+                },
+                { 
+                  icon: '🔥', 
+                  value: String(data.sentiment.hype), 
+                  label: 'Hype posts', 
+                  sublabel: 'positive sentiment',
+                  color: '#f59e0b' 
+                },
               ].map(s => (
                 <div key={s.label} style={{
                   background: 'var(--bg-card)',
@@ -111,7 +129,8 @@ export default function PulsePage() {
                   }}>
                     {s.value}
                   </div>
-                  <div style={{ fontSize: 11, color: 'var(--text-3)' }}>{s.label}</div>
+                  <div style={{ fontSize: 11, color: 'var(--text-3)', fontWeight: 600 }}>{s.label}</div>
+                  <div style={{ fontSize: 9, color: 'var(--text-3)', opacity: 0.7 }}>{s.sublabel}</div>
                 </div>
               ))}
             </div>
@@ -146,7 +165,7 @@ export default function PulsePage() {
         <div style={{
           display: 'flex', gap: 6, marginBottom: 16, flexWrap: 'wrap',
         }}>
-          {(['all', 'news', 'reddit', 'bluesky'] as const).map(src => {
+          {(['all', 'reddit', 'news', 'bluesky'] as const).map(src => {
             const count = src === 'all'
               ? data?.counts.total
               : data?.counts[src as keyof typeof data.counts]
@@ -216,12 +235,14 @@ export default function PulsePage() {
             <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-2)', marginBottom: 6 }}>
               {data?.error
                 ? 'Could not reach social feeds'
-                : 'No posts found for this filter'}
+                : data?.counts.total === 0
+                ? 'No WC2026 posts found yet'
+                : 'No posts for this filter'}
             </div>
             <div style={{ fontSize: 12 }}>
               {data?.error
-                ? 'Check API keys · NewsData.io and Reddit should be available'
-                : 'Try "All" to see everything'}
+                ? `Error: ${data.error}`
+                : 'WC2026 discussion picks up closer to June 11'}
             </div>
             {data?.error && (
               <div style={{
