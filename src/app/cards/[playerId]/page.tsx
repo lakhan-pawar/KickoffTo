@@ -42,6 +42,46 @@ function getMockPlayer(playerId: string) {
       stats: { goals: 1, assists: 3, appearances: 6, rating: 8.1 },
       rarity: 'silver',
     },
+    'bellingham': {
+      id: 'bellingham', name: 'J. Bellingham', fullName: 'Jude Bellingham',
+      position: 'MID', nationality: 'England', flag: '🏴',
+      club: 'Real Madrid', photo: null,
+      kitColors: ['#cf081f', '#ffffff'],
+      stats: { goals: 0, assists: 0, appearances: 0, rating: 0 },
+      rarity: 'gold',
+    },
+    'vinicius': {
+      id: 'vinicius', name: 'Vinicius Jr.', fullName: 'Vinicius Junior',
+      position: 'ATT', nationality: 'Brazil', flag: '🇧🇷',
+      club: 'Real Madrid', photo: null,
+      kitColors: ['#f7e03b', '#009c3b'],
+      stats: { goals: 0, assists: 0, appearances: 0, rating: 0 },
+      rarity: 'gold',
+    },
+    'haaland': {
+      id: 'haaland', name: 'E. Haaland', fullName: 'Erling Haaland',
+      position: 'ATT', nationality: 'Norway', flag: '🇳🇴',
+      club: 'Man City', photo: null,
+      kitColors: ['#97c1e7', '#ffffff'],
+      stats: { goals: 0, assists: 0, appearances: 0, rating: 0 },
+      rarity: 'gold',
+    },
+    'kane': {
+      id: 'kane', name: 'H. Kane', fullName: 'Harry Kane',
+      position: 'ATT', nationality: 'England', flag: '🏴',
+      club: 'Bayern Munich', photo: null,
+      kitColors: ['#cf081f', '#ffffff'],
+      stats: { goals: 0, assists: 0, appearances: 0, rating: 0 },
+      rarity: 'silver',
+    },
+    'salah': {
+      id: 'salah', name: 'M. Salah', fullName: 'Mohamed Salah',
+      position: 'ATT', nationality: 'Egypt', flag: '🇪🇬',
+      club: 'Liverpool', photo: null,
+      kitColors: ['#c8102e', '#ffffff'],
+      stats: { goals: 0, assists: 0, appearances: 0, rating: 0 },
+      rarity: 'gold',
+    },
   }
   return players[playerId] ?? players['messi']
 }
