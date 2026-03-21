@@ -32,9 +32,38 @@ export const GENRE_CONFIG: Record<string, {
 }
 
 export interface TTSResult {
-  audioDataUri: string | null  // data:audio/mpeg;base64,...
+  audioDataUri: string | null
   error?: string
   voiceUsed?: string
+  originalLength?: number
+  usedLength?: number
+}
+
+function prepareForStream(text: string): string {
+  // Try to get first complete paragraph (ends with \n\n or double newline)
+  const paragraphs = text.split(/\n\n+/).filter(p => p.trim().length > 0)
+
+  if (paragraphs.length === 0) return text.slice(0, 950)
+
+  // Build up paragraphs until we hit 950 chars (leave buffer below 1000)
+  let result = ''
+  for (const para of paragraphs) {
+    const candidate = result ? result + '\n\n' + para.trim() : para.trim()
+    if (candidate.length > 950) break
+    result = candidate
+  }
+
+  // If even first paragraph is too long, truncate at last sentence
+  if (!result || result.length === 0) {
+    const firstPara = paragraphs[0].slice(0, 950)
+    // Find last sentence ending
+    const lastSentence = firstPara.search(/[.!?][^.!?]*$/)
+    return lastSentence > 100
+      ? firstPara.slice(0, lastSentence + 1)
+      : firstPara
+  }
+
+  return result
 }
 
 export async function textToSpeech(
@@ -50,8 +79,7 @@ export async function textToSpeech(
 
   const config = GENRE_CONFIG[genre] ?? GENRE_CONFIG.heist
 
-  // /stream supports max 1000 chars
-  const truncated = text.slice(0, 1000)
+  const truncated = prepareForStream(text)
   const useStream = truncated.length <= 1000
 
   for (let attempt = 0; attempt < KEYS.length; attempt++) {
@@ -108,6 +136,8 @@ export async function textToSpeech(
       return {
         audioDataUri: dataUri,
         voiceUsed: config.label,
+        originalLength: text.length,
+        usedLength: truncated.length,
       }
 
     } catch (err: unknown) {

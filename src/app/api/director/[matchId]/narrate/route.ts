@@ -31,6 +31,8 @@ export async function POST(
     return NextResponse.json({
       audioDataUri: result.audioDataUri,
       voiceUsed: result.voiceUsed,
+      originalLength: result.originalLength,
+      usedLength: result.usedLength,
       error: null,
     })
 

@@ -49,6 +49,10 @@ export function DirectorModeClient({ match, initialGenre }: DirectorModeClientPr
   const [audioStatus, setAudioStatus]     = useState('')
   const [audioDataUri, setAudioDataUri]   = useState<string | null>(null)
   const [voiceUsed, setVoiceUsed]         = useState('')
+  const [narrationInfo, setNarrationInfo] = useState<{
+    originalLength: number
+    usedLength: number
+  } | null>(null)
   const audioRef = useRef<HTMLAudioElement>(null)
 
   const genre = GENRES.find(g => g.id === selectedGenre)
@@ -61,6 +65,7 @@ export function DirectorModeClient({ match, initialGenre }: DirectorModeClientPr
     setAudioDataUri(null)
     setAudioError('')
     setVoiceUsed('')
+    setNarrationInfo(null)
 
     try {
       const res = await fetch(`/api/director/${match.id}/generate`, {
@@ -106,6 +111,8 @@ export function DirectorModeClient({ match, initialGenre }: DirectorModeClientPr
       let data: {
         audioDataUri?: string | null
         voiceUsed?: string
+        originalLength?: number
+        usedLength?: number
         error?: string
       } = {}
 
@@ -120,6 +127,12 @@ export function DirectorModeClient({ match, initialGenre }: DirectorModeClientPr
         setAudioDataUri(data.audioDataUri)
         setVoiceUsed(data.voiceUsed ?? '')
         setAudioStatus('')
+        if (data.originalLength && data.usedLength) {
+          setNarrationInfo({
+            originalLength: data.originalLength,
+            usedLength: data.usedLength,
+          })
+        }
       } else {
         let errorMsg = data.error ?? 'Audio generation failed'
         if (errorMsg.includes('FUNCTION_INVOCATION_TIMEOUT')) {
@@ -391,11 +404,20 @@ export function DirectorModeClient({ match, initialGenre }: DirectorModeClientPr
                       animation: 'spin 0.8s linear infinite',
                       display: 'inline-block', flexShrink: 0,
                     }} />
-                    {audioStatus || 'Generating...'}
+                    {audioStatus || 'Generating audio...'}
                   </div>
                 ) : '▶ Generate audio'}
               </button>
             </div>
+
+            {script && script.length > 950 && !audioDataUri && !audioLoading && (
+              <p style={{
+                fontSize: 10, color: 'var(--text-3)',
+                marginTop: 6, fontStyle: 'italic',
+              }}>
+                ℹ️ First paragraph will be narrated (~950 chars max per request)
+              </p>
+            )}
 
             {audioError && (
               <div style={{
@@ -487,6 +509,14 @@ export function DirectorModeClient({ match, initialGenre }: DirectorModeClientPr
                     ↓ MP3
                   </button>
                 </div>
+
+                {narrationInfo && narrationInfo.originalLength > narrationInfo.usedLength && (
+                  <div style={{
+                    fontSize: 9, color: 'var(--text-3)', marginTop: 6, textAlign: 'center',
+                  }}>
+                    Narrating first {narrationInfo.usedLength} of {narrationInfo.originalLength} chars
+                  </div>
+                )}
               </div>
             )}
           </div>
