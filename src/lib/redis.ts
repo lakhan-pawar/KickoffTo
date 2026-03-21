@@ -8,24 +8,34 @@ export const redis = redisUrl && redisToken
   ? new Redis({ url: redisUrl, token: redisToken })
   : null as unknown as Redis
 
+// Fallback for when Redis is not configured
+const mockLimiter = {
+  limit: async () => ({
+    success: true,
+    remaining: 999,
+    reset: 0,
+    limit: 999,
+  }),
+} as any
+
 // Rate limiters
 export const agentChatLimiter = redis ? new Ratelimit({
   redis,
   limiter: Ratelimit.slidingWindow(15, '1 m'),
   prefix: 'rl:chat',
-}) : null as unknown as Ratelimit
+}) : mockLimiter
 
 export const councilLimiter = redis ? new Ratelimit({
   redis,
   limiter: Ratelimit.fixedWindow(1, '1 h'),
   prefix: 'rl:council',
-}) : null as unknown as Ratelimit
+}) : mockLimiter
 
 export const directorLimiter = redis ? new Ratelimit({
   redis,
   limiter: Ratelimit.fixedWindow(3, '1 h'),
   prefix: 'rl:director',
-}) : null as unknown as Ratelimit
+}) : mockLimiter
 
 // Cache helpers
 export async function getCache<T>(key: string): Promise<T | null> {

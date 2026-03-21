@@ -1,4 +1,4 @@
-import { streamText } from 'ai'
+import { streamText, createDataStreamResponse, formatDataStreamPart } from 'ai'
 import { createGroq } from '@ai-sdk/groq'
 import { NextRequest } from 'next/server'
 import { agentChatLimiter } from '@/lib/redis'
@@ -35,6 +35,24 @@ export async function POST(
     process.env.GROQ_API_KEY_3,
   ].filter(Boolean) as string[]
 
+  const mockMap: Record<string, string> = {
+    'el-maestro': 'The tactical analysis is undergoing a brief correction. One moment.',
+    'xg-oracle': 'The xG model is currently being retrained. Stand by.',
+    'the-voice': 'A slight technical hitch in the booth. Back soon.',
+    'ultra': 'Even the best firms have to regroup sometimes. Back in a bit.',
+    'aria-9': 'Optimizing core-logic processing. Stand by, Operator.',
+    'coach-believe': 'Just a little halftime adjustment! We’ll be right back!',
+    'the-archive': 'The archives are currently being reorganized for better accuracy.',
+  }
+
+  if (keys.length === 0) {
+    return createDataStreamResponse({
+      execute: (dataStream) => {
+        dataStream.write(formatDataStreamPart('text', mockMap[id] ?? `${character.name} is currently resting. Please try again later.`))
+      },
+    })
+  }
+
   const apiKey = keys[Math.floor(Date.now() / 60000) % keys.length]
   const groq = createGroq({ apiKey })
 
@@ -47,18 +65,12 @@ export async function POST(
       temperature: 0.8,
     })
     return result.toDataStreamResponse()
-  } catch {
-    const mockMap: Record<string, string> = {
-      'el-maestro': 'The pressing structure tells the whole story. Ask me again in a moment.',
-      'xg-oracle': 'The xG model is temporarily recalibrating. Stand by.',
-      'the-voice': 'I am momentarily speechless. The commentary resumes shortly.',
-      'ultra': 'Servers getting ROBBED right now. Back in a moment.',
-      'aria-9': 'Processing capacity exceeded, Operator. Stand by.',
-      'coach-believe': 'Even servers need to believe sometimes! Try again!',
-    }
-    return new Response(
-      mockMap[id] ?? `${character.name} is briefly unavailable. Please try again.`,
-      { headers: { 'Content-Type': 'text/plain' } }
-    )
+  } catch (error) {
+    console.error('Chat API Error:', error)
+    return createDataStreamResponse({
+      execute: (dataStream) => {
+        dataStream.write(formatDataStreamPart('text', mockMap[id] ?? `${character.name} is briefly unavailable. Please try again.`))
+      },
+    })
   }
 }

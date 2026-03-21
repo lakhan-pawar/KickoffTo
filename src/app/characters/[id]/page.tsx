@@ -1,4 +1,4 @@
-﻿import { notFound } from 'next/navigation'
+import { notFound } from 'next/navigation'
 
 import { Navbar } from '@/components/ui/Navbar'
 import { Ticker } from '@/components/ui/Ticker'
@@ -9,11 +9,12 @@ import { CHARACTER_MAP } from '@/lib/constants'
 import type { Metadata } from 'next'
 
 interface PageProps {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const character = CHARACTER_MAP.get(params.id)
+  const { id } = await params
+  const character = CHARACTER_MAP.get(id)
   if (!character) return { title: 'Character not found — KickoffTo' }
   return {
     title: `${character.name} — KickoffTo`,
@@ -26,8 +27,9 @@ export function generateStaticParams() {
   return chars.map(c => ({ id: c.id }))
 }
 
-export default function CharacterPage({ params }: PageProps) {
-  const character = CHARACTER_MAP.get(params.id)
+export default async function CharacterPage({ params }: PageProps) {
+  const { id } = await params
+  const character = CHARACTER_MAP.get(id)
   if (!character) notFound()
 
   return (
