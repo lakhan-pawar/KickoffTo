@@ -9,11 +9,13 @@ const GEMINI_KEYS = [
 let currentKeyIndex = 0
 
 function getGeminiClient() {
+  if (GEMINI_KEYS.length === 0) return new GoogleGenerativeAI('')
   const key = GEMINI_KEYS[currentKeyIndex % GEMINI_KEYS.length]
   return new GoogleGenerativeAI(key)
 }
 
 function rotateKey() {
+  if (GEMINI_KEYS.length === 0) return
   currentKeyIndex = (currentKeyIndex + 1) % GEMINI_KEYS.length
 }
 

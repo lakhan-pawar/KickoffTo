@@ -14,10 +14,12 @@ let apifKeyIndex = 0
 let fdKeyIndex = 0
 
 function getApiFootballKey() {
+  if (FOOTBALL_API_KEYS.length === 0) return ''
   return FOOTBALL_API_KEYS[apifKeyIndex++ % FOOTBALL_API_KEYS.length]
 }
 
 function getFootballDataKey() {
+  if (FOOTBALL_DATA_KEYS.length === 0) return ''
   return FOOTBALL_DATA_KEYS[fdKeyIndex++ % FOOTBALL_DATA_KEYS.length]
 }
 

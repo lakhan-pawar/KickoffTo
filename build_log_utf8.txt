@@ -1,0 +1,54 @@
+﻿   Γû▓ Next.js 15.2.4
+
+   Creating an optimized production build ...
+ Γ£ô Compiled successfully
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/4) ...
+   Generating static pages (1/4) 
+   Generating static pages (2/4) 
+   Generating static pages (3/4) 
+node.exe : Error occurred prerendering page "/". Read more: 
+https://nextjs.org/docs/messages/prerender-error
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program 
+Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Error occurred 
+    ...prerender-error:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+Error: Event handlers cannot be passed to Client Component 
+props.
+  {style: ..., onMouseEnter: function onMouseEnter, 
+onMouseLeave: ..., children: ...}
+                             ^^^^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this 
+to a Client Component.
+    at e$ (C:\AI_ML_PROJECTS\Online\Final\KickoffTo\node_mod
+ules\next\dist\compiled\next-server\app-page.runtime.prod.js
+:17:23404)
+    at Object.toJSON (C:\AI_ML_PROJECTS\Online\Final\Kickoff
+To\node_modules\next\dist\compiled\next-server\app-page.runt
+ime.prod.js:17:14854)
+    at stringify (<anonymous>)
+    at eF (C:\AI_ML_PROJECTS\Online\Final\KickoffTo\node_mod
+ules\next\dist\compiled\next-server\app-page.runtime.prod.js
+:17:26079)
+    at eq (C:\AI_ML_PROJECTS\Online\Final\KickoffTo\node_mod
+ules\next\dist\compiled\next-server\app-page.runtime.prod.js
+:17:26391)
+    at ez (C:\AI_ML_PROJECTS\Online\Final\KickoffTo\node_mod
+ules\next\dist\compiled\next-server\app-page.runtime.prod.js
+:17:26887)
+    at Immediate._onImmediate (C:\AI_ML_PROJECTS\Online\Fina
+l\KickoffTo\node_modules\next\dist\compiled\next-server\app-
+page.runtime.prod.js:17:14557)
+    at process.processImmediate 
+(node:internal/timers:506:21)
+Export encountered an error on /page: /, exiting the build.
+Assertion failed: !(handle->flags & UV_HANDLE_CLOSING), 
+file src\win\async.c, line 76
+ Γ¿» Next.js build worker exited with code: 3221226505 and 
+signal: null

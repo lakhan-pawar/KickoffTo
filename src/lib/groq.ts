@@ -11,11 +11,13 @@ const GROQ_KEYS = [
 let currentKeyIndex = 0
 
 function getGroqClient(): Groq {
+  if (GROQ_KEYS.length === 0) return new Groq({ apiKey: '' })
   const key = GROQ_KEYS[currentKeyIndex % GROQ_KEYS.length]
   return new Groq({ apiKey: key })
 }
 
 function rotateKey() {
+  if (GROQ_KEYS.length === 0) return
   currentKeyIndex = (currentKeyIndex + 1) % GROQ_KEYS.length
 }
 
