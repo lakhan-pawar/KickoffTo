@@ -42,7 +42,7 @@ const WC: Array<{
   { year:2014, winner:'Germany',    code:'GER', host:'Brazil',        kitColor:'#1a1a1a' },
   { year:2018, winner:'France',     code:'FRA', host:'Russia',        kitColor:'#003087' },
   { year:2022, winner:'Argentina',  code:'ARG', host:'Qatar',         kitColor:'#75aadb' },
-  { year:2026, winner:'TBD',        code:'CAN', host:'CAN/MEX/USA',   kitColor:'#16a34a' },
+  { year:2026, winner:'TBD',        code:'USA', host:'CAN · MEX · USA',  kitColor:'#16a34a' },
 ]
 
 export default function HistoryPage() {
@@ -129,42 +129,76 @@ export default function HistoryPage() {
                   {/* Year badge */}
                   <div style={{
                     alignSelf:'flex-start',
-                    background:'rgba(0,0,0,0.45)',
+                    background:'rgba(0,0,0,0.55)',
                     backdropFilter:'blur(8px)',
                     borderRadius:7, padding:'3px 8px',
                     fontFamily:'var(--font-display)',
-                    fontSize:13, fontWeight:800, color:'#fff',
+                    fontSize:13, fontWeight:800,
+                    color:'#ffffff',  // always white
+                    textShadow:'0 1px 4px rgba(0,0,0,0.8)',
+                    border:'1px solid rgba(255,255,255,0.15)',
                   }}>
                     {wc.year}
                   </div>
 
                   {/* Flag centred */}
-                  <div style={{
-                    position:'absolute',
-                    top:'50%', left:'50%',
-                    transform:'translate(-50%,-56%)',
-                  }}>
-                    <Flag
-                      code={wc.code}
-                      size={52}
-                      style={{ borderRadius:6, boxShadow:'0 4px 16px rgba(0,0,0,0.5)' }}
-                    />
-                  </div>
+                  {wc.year === 2026 ? (
+                    // Three host nation flags
+                    <div style={{
+                      position:'absolute',
+                      top:'50%', left:'50%',
+                      transform:'translate(-50%, -52%)',
+                      display:'flex', gap:4, alignItems:'center',
+                    }}>
+                      {['CAN','USA','MEX'].map(code => (
+                        <img
+                          key={code}
+                          src={`https://flagcdn.com/w40/${
+                            code==='CAN'?'ca':code==='USA'?'us':'mx'
+                          }.png`}
+                          alt={code}
+                          width={28} height={20}
+                          style={{
+                            objectFit:'cover', borderRadius:4,
+                            boxShadow:'0 2px 8px rgba(0,0,0,0.5)',
+                          }}
+                        />
+                      ))}
+                    </div>
+                  ) : (
+                    // Single winner flag
+                    <div style={{
+                      position:'absolute',
+                      top:'50%', left:'50%',
+                      transform:'translate(-50%,-56%)',
+                    }}>
+                      <Flag
+                        code={wc.code}
+                        size={52}
+                        style={{ borderRadius:6, boxShadow:'0 4px 16px rgba(0,0,0,0.5)' }}
+                      />
+                    </div>
+                  )}
 
                   {/* Bottom pill */}
                   <div style={{
-                    background:'rgba(0,0,0,0.55)',
+                    background:'rgba(0,0,0,0.65)',
                     backdropFilter:'blur(10px)',
                     borderRadius:10, padding:'7px 9px',
+                    border:'1px solid rgba(255,255,255,0.1)',
                   }}>
                     <div style={{
                       fontSize:12, fontWeight:800,
-                      color:'#fff', lineHeight:1.2,
+                      color:'#ffffff',  // always white
+                      lineHeight:1.2,
+                      textShadow:'0 1px 3px rgba(0,0,0,0.6)',
                     }}>
                       {wc.winner}
                     </div>
                     <div style={{
-                      fontSize:9, color:'rgba(255,255,255,0.5)', marginTop:2,
+                      fontSize:9,
+                      color:'rgba(255,255,255,0.6)',
+                      marginTop:2,
                     }}>
                       {wc.host}
                     </div>

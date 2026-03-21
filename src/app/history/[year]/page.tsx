@@ -5,6 +5,15 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import wcHistory from '@/data/wc-history.json'
 
+const HISTORY_FLAG_ISO: Record<string,string> = {
+  URU:'uy', ITA:'it', GER:'de', BRA:'br', ENG:'gb-eng',
+  ARG:'ar', FRA:'fr', ESP:'es',
+}
+
+function getHistoryFlag(winnerCode: string): string {
+  return HISTORY_FLAG_ISO[winnerCode] ?? 'un'
+}
+
 interface PageProps {
   params: Promise<{ year: string }>
 }
@@ -51,25 +60,34 @@ export default async function HistoryYearPage({ params }: PageProps) {
           ← All World Cups
         </Link>
 
-        {/* Large ghost year as background art */}
         <div style={{ position: 'relative', marginBottom: 8 }}>
-          <div style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: 'clamp(72px, 15vw, 120px)',
-            fontWeight: 900,
-            color: 'transparent',
-            WebkitTextStroke: '1px var(--border)',
-            lineHeight: 1,
-            fontVariantNumeric: 'tabular-nums',
-            userSelect: 'none',
+          <h1 style={{
+            fontFamily:'var(--font-display)', fontWeight:900,
+            fontSize:'clamp(48px, 12vw, 96px)',
+            letterSpacing:-3, lineHeight:1,
+            color:'var(--text)',
+            // Add text shadow for visibility on all backgrounds:
+            WebkitTextStroke:'1px rgba(128,128,128,0.3)',
+            marginBottom:8,
           }}>
             {wc.year}
-          </div>
+          </h1>
         </div>
 
         {/* Winner + host */}
+        <div style={{ textAlign:'center', marginBottom:16 }}>
+          <img
+            src={`https://flagcdn.com/w160/${getHistoryFlag(wc.winnerCode ?? '')}.png`}
+            alt={wc.winner}
+            style={{
+              width:96, height:'auto',
+              borderRadius:10,
+              boxShadow:'0 8px 32px rgba(0,0,0,0.4)',
+              border:'2px solid rgba(255,255,255,0.1)',
+            }}
+          />
+        </div>
         <div style={{ marginBottom: 4 }}>
-          <span style={{ fontSize: 32, marginRight: 8 }}>{wc.winnerFlag}</span>
           <span style={{
             fontFamily: 'var(--font-display)', fontSize: 24,
             fontWeight: 800, color: 'var(--text)',

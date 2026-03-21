@@ -104,13 +104,41 @@ export default function LiveIndexPage() {
               textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8 }}>
               Demo · Argentina vs France
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
-              <span style={{ fontSize: 28 }}>🇦🇷</span>
-              <span style={{ fontFamily: 'var(--font-display)', fontSize: 32,
-                fontWeight: 900, fontVariantNumeric: 'tabular-nums', color: 'var(--text)' }}>
+            <div style={{
+              display:'flex', alignItems:'center',
+              gap:12, justifyContent:'center',
+              padding:'16px 0',
+            }}>
+              {/* Home team */}
+              <div style={{ textAlign:'center' }}>
+                <img src="https://flagcdn.com/w80/ar.png" alt="Argentina"
+                  width={48} height={34}
+                  style={{ objectFit:'cover', borderRadius:6,
+                    boxShadow:'0 4px 12px rgba(0,0,0,0.5)', marginBottom:6 }} />
+                <div style={{ fontSize:11, fontWeight:600, color:'var(--text)' }}>
+                  Argentina
+                </div>
+              </div>
+
+              {/* Score */}
+              <div style={{
+                fontFamily:'var(--font-display)', fontWeight:900,
+                fontSize:40, color:'var(--text)', letterSpacing:-2,
+                fontVariantNumeric:'tabular-nums', padding:'0 8px',
+              }}>
                 2 – 1
-              </span>
-              <span style={{ fontSize: 28 }}>🇫🇷</span>
+              </div>
+
+              {/* Away team */}
+              <div style={{ textAlign:'center' }}>
+                <img src="https://flagcdn.com/w80/fr.png" alt="France"
+                  width={48} height={34}
+                  style={{ objectFit:'cover', borderRadius:6,
+                    boxShadow:'0 4px 12px rgba(0,0,0,0.5)', marginBottom:6 }} />
+                <div style={{ fontSize:11, fontWeight:600, color:'var(--text)' }}>
+                  France
+                </div>
+              </div>
             </div>
             <div style={{ fontSize: 12, color: 'var(--text-3)', marginBottom: 10 }}>
               Group A · MetLife Stadium · 67&apos;
