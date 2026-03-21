@@ -3,6 +3,7 @@ import { useChat } from 'ai/react'
 import { useEffect, useRef, useState } from 'react'
 import { ShareButton } from './ShareButton'
 import { SuggestedPrompts } from './SuggestedPrompts'
+import { VoiceMode } from './VoiceMode'
 import type { Character } from '@/types'
 
 interface ChatPanelProps {
@@ -13,6 +14,7 @@ export function ChatPanel({ character }: ChatPanelProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const [apiStatus, setApiStatus] = useState<'unknown' | 'ok' | 'error'>('unknown')
   const [apiError, setApiError] = useState('')
+  const [isVoiceActive, setIsVoiceActive] = useState(false)
 
   const {
     messages,
@@ -69,6 +71,8 @@ export function ChatPanel({ character }: ChatPanelProps) {
       borderRadius: 12,
       display: 'flex', flexDirection: 'column',
       height: 580, overflow: 'hidden',
+      boxShadow: isVoiceActive ? '0 0 0 2px var(--red-card)' : 'none',
+      transition: 'box-shadow 0.3s ease',
     }}>
 
       {/* Header */}
@@ -110,8 +114,25 @@ export function ChatPanel({ character }: ChatPanelProps) {
               : 'Connecting...'}
           </div>
         </div>
-        <div style={{ flexShrink: 0, minWidth: 130 }}>
-          <ShareButton characterId={character.id} />
+        <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+          <button
+            onClick={() => setIsVoiceActive(!isVoiceActive)}
+            style={{
+              width: 32, height: 32, borderRadius: 8,
+              background: isVoiceActive ? 'var(--red-card)' : 'var(--bg-card)',
+              border: `1px solid ${isVoiceActive ? 'var(--red-card)' : 'var(--border)'}`,
+              color: isVoiceActive ? '#fff' : 'var(--text-3)',
+              cursor: 'pointer', display: 'flex',
+              alignItems: 'center', justifyContent: 'center',
+              fontSize: 14, transition: 'all 0.2s',
+            }}
+            title={isVoiceActive ? 'Turn off voice mode' : 'Turn on voice mode'}
+          >
+            {isVoiceActive ? '🎤' : '🎙️'}
+          </button>
+          <div style={{ flexShrink: 0, minWidth: 130 }}>
+            <ShareButton characterId={character.id} />
+          </div>
         </div>
       </div>
 
@@ -160,6 +181,13 @@ export function ChatPanel({ character }: ChatPanelProps) {
         flex: 1, overflowY: 'auto', padding: 14,
         display: 'flex', flexDirection: 'column', gap: 12,
       }}>
+        <VoiceMode
+          isActive={isVoiceActive}
+          onTranscript={(text) => {
+            setInput(text)
+            // Auto submit can be tricky with ai/react, so we just set input for now
+          }}
+        />
         {messages.map(message => (
           <div key={message.id} style={{
             display: 'flex',

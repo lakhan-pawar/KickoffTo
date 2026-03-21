@@ -10,6 +10,11 @@ const MORE_LINKS = [
   { href: '/teams',   icon: '🏳️', label: 'Teams', desc: 'All 48 qualified nations' },
   { href: '/groups',  icon: '⚽', label: 'Groups', desc: '12 groups · standings' },
   { href: '/director/mock-arg-fra', icon: '🎬', label: 'Director Mode', desc: 'Match retold as Horror · Romance · Heist · Sci-Fi' },
+  { href: '/games/chaos', icon: '🎲', label: 'Chaos Engine', desc: 'Randomise every result in the tourney' },
+  { href: '/analyse', icon: '📸', label: 'Match Analyser',
+    desc: 'Screenshot your TV · Gemini reads the formation' },
+  { href: '/games/chant', icon: '📣', label: 'Chant Creator',
+    desc: 'Generate WC2026 terrace chants' },
   { href: '/h2h', icon: '⚔️', label: 'Head to Head', desc: 'WC history between any two nations' },
 ]
 

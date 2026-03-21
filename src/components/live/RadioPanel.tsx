@@ -47,6 +47,31 @@ export function RadioPanel({ matchId, match }: RadioPanelProps) {
     }
   }
 
+  function playCommentary() {
+    if (!commentary || isPlaying) return
+    
+    const utterance = new SpeechSynthesisUtterance(commentary)
+    // Try to find a good narrator voice
+    const voices = window.speechSynthesis.getVoices()
+    const narratorVoice = voices.find(v => v.lang.startsWith('en') && v.name.includes('Google')) 
+      || voices.find(v => v.lang.startsWith('en'))
+    
+    if (narratorVoice) utterance.voice = narratorVoice
+    utterance.rate = 1.05
+    utterance.pitch = 1.0
+
+    utterance.onstart = () => setIsPlaying(true)
+    utterance.onend = () => setIsPlaying(false)
+    utterance.onerror = () => setIsPlaying(false)
+
+    window.speechSynthesis.speak(utterance)
+  }
+
+  function stopCommentary() {
+    window.speechSynthesis.cancel()
+    setIsPlaying(false)
+  }
+
   return (
     <div style={{ padding: 16 }}>
 
@@ -137,14 +162,27 @@ export function RadioPanel({ matchId, match }: RadioPanelProps) {
             onClick={fetchCommentary}
             disabled={isLoading}
             style={{
-              flex: 1, background: 'var(--green)', color: '#fff',
+              flex: 2, background: 'var(--green)', color: '#fff',
               border: 'none', borderRadius: 8,
               padding: '9px 16px', fontSize: 12, fontWeight: 600,
               cursor: isLoading ? 'not-allowed' : 'pointer',
               opacity: isLoading ? 0.6 : 1,
             }}
           >
-            {isLoading ? 'Generating...' : '🎙️ Generate commentary'}
+            {isLoading ? 'Generating...' : '🎙️ Generate narrative'}
+          </button>
+          <button
+            onClick={isPlaying ? stopCommentary : playCommentary}
+            disabled={isLoading || !commentary}
+            style={{
+              flex: 1, background: isPlaying ? 'var(--red-card)' : 'var(--bg-elevated)',
+              color: isPlaying ? '#fff' : 'var(--text)',
+              border: `1px solid ${isPlaying ? 'var(--red-card)' : 'var(--border)'}`,
+              borderRadius: 8, padding: '9px 16px', fontSize: 12,
+              fontWeight: 600, cursor: (isLoading || !commentary) ? 'not-allowed' : 'pointer',
+            }}
+          >
+            {isPlaying ? '⏹️ Stop' : '🔊 Listen'}
           </button>
         </div>
       </div>

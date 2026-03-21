@@ -42,6 +42,22 @@ const GAMES = [
     cta: 'Unleash chaos →',
     available: true,
   },
+  {
+    href: '/games/chant',
+    icon: '📣',
+    name: 'Chant Creator',
+    desc: 'Generate a WC2026 terrace chant for any team. Share it. Start it in the stands.',
+    cta: 'Create a chant →',
+    available: true,
+  },
+  {
+    href: '/analyse',
+    icon: '📸',
+    name: 'Match Analyser',
+    desc: 'Screenshot your TV screen — El Maestro reads the formation with Gemini Vision.',
+    cta: 'Analyse a screenshot →',
+    available: true,
+  },
 ]
 
 export default function GamesPage() {
