@@ -1,129 +1,179 @@
+// src/lib/social.ts
 import type { SocialPost } from '@/types'
-import { REDDIT_SUBREDDITS } from './constants'
 
-const REDDIT_USER_AGENT = process.env.REDDIT_USER_AGENT
-  ?? 'KickoffTo/1.0 (contact: hello@kickoffto.com)'
+const REDDIT_UA = 'KickoffTo/1.0 (contact: hello@kickoffto.com)'
 
-// Primary: Bluesky public search API (no auth needed)
-async function fetchBluesky(query: string): Promise<SocialPost[]> {
-  const url = `https://public.api.bsky.app/xrpc/app.bsky.feed.searchPosts`
-    + `?q=${encodeURIComponent(query)}&limit=25&sort=latest`
+// ── NewsData.io — primary source ──────────────────────────
+async function fetchNews(): Promise<SocialPost[]> {
+  const apiKey = process.env.NEWS_API_KEY_1
+    ?? process.env.NEWS_API_KEY_2
+    ?? process.env.NEWS_API_KEY_3
 
-  const res = await fetch(url, { next: { revalidate: 300 } })
-  if (!res.ok) throw new Error(`Bluesky ${res.status}`)
-
-  const data = await res.json() as {
-    posts: Array<{
-      uri: string
-      record: { text: string }
-      author: { handle: string }
-      indexedAt: string
-    }>
-  }
-
-  return data.posts.map(p => ({
-    id: p.uri,
-    text: p.record.text,
-    author: p.author.handle,
-    created: p.indexedAt,
-    source: 'bluesky' as const,
-    url: `https://bsky.app/profile/${p.author.handle}/post/${p.uri.split('/').pop()}`,
-  }))
-}
-
-// Secondary: Reddit .json (no OAuth — just User-Agent header)
-async function fetchReddit(subreddit: string, query?: string): Promise<SocialPost[]> {
-  const baseUrl = query
-    ? `https://www.reddit.com/r/${subreddit}/search.json?q=${encodeURIComponent(query)}&sort=new&limit=20`
-    : `https://www.reddit.com/r/${subreddit}/hot.json?limit=20`
-
-  const res = await fetch(baseUrl, {
-    headers: { 'User-Agent': REDDIT_USER_AGENT },
-    next: { revalidate: 300 },
-  })
-  if (!res.ok) throw new Error(`Reddit ${res.status}`)
-
-  const data = await res.json() as {
-    data: { children: Array<{ data: {
-      id: string; title: string; author: string
-      created_utc: number; score: number; permalink: string
-    }}> }
-  }
-
-  return data.data.children.map(c => ({
-    id: c.data.id,
-    text: c.data.title,
-    author: `u/${c.data.author}`,
-    created: new Date(c.data.created_utc * 1000).toISOString(),
-    source: 'reddit' as const,
-    score: c.data.score,
-    url: `https://reddit.com${c.data.permalink}`,
-  }))
-}
-
-// Tertiary: NewsData.io
-async function fetchNews(query: string): Promise<SocialPost[]> {
-  const key = process.env.NEWS_API_KEY_1
-  if (!key) throw new Error('No NewsData key')
+  if (!apiKey) throw new Error('No NewsData API key')
 
   const url = `https://newsdata.io/api/1/news`
-    + `?q=${encodeURIComponent(query)}&language=en&apikey=${key}`
+    + `?apikey=${apiKey}`
+    + `&q=World+Cup+2026`
+    + `&language=en`
+    + `&category=sports`
+    + `&size=10`
 
-  const res = await fetch(url, { next: { revalidate: 1800 } })
+  const res = await fetch(url, {
+    headers: { 'Accept': 'application/json' },
+    next: { revalidate: 300 },
+  })
+
   if (!res.ok) throw new Error(`NewsData ${res.status}`)
 
   const data = await res.json() as {
+    status: string
     results: Array<{
-      article_id: string; title: string
-      source_id: string; pubDate: string; link: string
+      article_id: string
+      title: string
+      description: string | null
+      link: string
+      source_name: string
+      pubDate: string
     }>
   }
 
+  if (data.status !== 'success') throw new Error('NewsData error')
+
   return (data.results ?? []).map(a => ({
     id: a.article_id,
-    text: a.title,
-    author: a.source_id,
+    text: a.title + (a.description ? ` — ${a.description}` : ''),
+    author: a.source_name,
     created: a.pubDate,
     source: 'news' as const,
     url: a.link,
   }))
 }
 
-// Main export with failover
-export async function getSocialPosts(query: string = '#WC2026'): Promise<SocialPost[]> {
-  // Try Bluesky first
-  try {
-    const posts = await fetchBluesky(`#WC2026 ${query}`)
-    if (posts.length > 0) return posts
-  } catch {}
-
-  // Fallback to Reddit (all subreddits in parallel)
-  try {
-    const results = await Promise.allSettled(
-      REDDIT_SUBREDDITS.map(sub => fetchReddit(sub, query))
-    )
-    const posts = results
-      .filter((r): r is PromiseFulfilledResult<SocialPost[]> => r.status === 'fulfilled')
-      .flatMap(r => r.value)
-      .sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime())
-      .slice(0, 25)
-    if (posts.length > 0) return posts
-  } catch {}
-
-  // Fallback to news
-  try {
-    return await fetchNews(query)
-  } catch {}
-
-  // Mock floor
-  return [
-    {
-      id: 'mock-1',
-      text: 'WC2026 is going to be incredible. 48 teams, three nations, one trophy.',
-      author: 'kickoffto_mock',
-      created: new Date().toISOString(),
-      source: 'bluesky',
-      url: 'https://bsky.app',
-    },
+// ── Reddit r/worldcup — secondary source ──────────────────
+async function fetchReddit(): Promise<SocialPost[]> {
+  const urls = [
+    'https://www.reddit.com/r/worldcup/hot.json?limit=20',
+    'https://www.reddit.com/r/soccer/search.json?q=World+Cup+2026&sort=new&limit=15',
   ]
+
+  const posts: SocialPost[] = []
+
+  for (const url of urls) {
+    try {
+      const res = await fetch(url, {
+        headers: { 'User-Agent': REDDIT_UA },
+        next: { revalidate: 300 },
+      })
+      if (!res.ok) continue
+
+      const data = await res.json() as {
+        data: {
+          children: Array<{
+            data: {
+              id: string
+              title: string
+              selftext: string
+              author: string
+              created_utc: number
+              permalink: string
+              score: number
+            }
+          }>
+        }
+      }
+
+      const items = data?.data?.children ?? []
+      items.forEach(({ data: p }) => {
+        posts.push({
+          id: p.id,
+          text: p.title,
+          author: `u/${p.author}`,
+          created: new Date(p.created_utc * 1000).toISOString(),
+          source: 'reddit' as const,
+          url: `https://reddit.com${p.permalink}`,
+        })
+      })
+    } catch {
+      // continue to next URL
+    }
+  }
+
+  return posts
+}
+
+// ── Bluesky authenticated — tertiary source ────────────────
+async function fetchBlueskyAuth(): Promise<SocialPost[]> {
+  const identifier = process.env.BLUESKY_IDENTIFIER_1
+  const password   = process.env.BLUESKY_APP_PASSWORD_1
+
+  if (!identifier || !password) return []
+
+  try {
+    // Create session
+    const sessionRes = await fetch(
+      'https://bsky.social/xrpc/com.atproto.server.createSession',
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ identifier, password }),
+      }
+    )
+    if (!sessionRes.ok) return []
+
+    const { accessJwt } = await sessionRes.json()
+
+    // Search posts
+    const searchRes = await fetch(
+      `https://bsky.social/xrpc/app.bsky.feed.searchPosts?q=WorldCup2026&limit=20&sort=latest`,
+      {
+        headers: { Authorization: `Bearer ${accessJwt}` },
+        next: { revalidate: 300 },
+      }
+    )
+    if (!searchRes.ok) return []
+
+    const data = await searchRes.json() as {
+      posts: Array<{
+        uri: string
+        record: { text: string }
+        author: { handle: string }
+        indexedAt: string
+      }>
+    }
+
+    return (data.posts ?? []).map(p => ({
+      id: p.uri,
+      text: p.record.text,
+      author: p.author.handle,
+      created: p.indexedAt,
+      source: 'bluesky' as const,
+      url: `https://bsky.app/profile/${p.author.handle}/post/${p.uri.split('/').pop()}`,
+    }))
+  } catch {
+    return []
+  }
+}
+
+// ── Main export ────────────────────────────────────────────
+export async function getSocialPosts(query: string): Promise<SocialPost[]> {
+  const results = await Promise.allSettled([
+    fetchNews(),
+    fetchReddit(),
+    fetchBlueskyAuth(),
+  ])
+
+  const allPosts: SocialPost[] = []
+
+  results.forEach(r => {
+    if (r.status === 'fulfilled') {
+      allPosts.push(...r.value)
+    }
+  })
+
+  // Sort by date descending
+  allPosts.sort((a, b) =>
+    new Date(b.created).getTime() - new Date(a.created).getTime()
+  )
+
+  return allPosts
 }

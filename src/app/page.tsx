@@ -7,6 +7,7 @@ import { Flag } from '@/components/ui/Flag'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { CHARACTERS } from '@/lib/constants'
+import { getSocialPosts } from '@/lib/social'
 
 export const metadata: Metadata = {
   title: 'KickoffTo — WC2026',
@@ -54,12 +55,6 @@ const FEATURED_MATCHES = [
   },
 ]
 
-const PULSE = [
-  { value: '14.2k', label: 'Bluesky posts', icon: '🦋' },
-  { value: '847',   label: 'News articles', icon: '📰' },
-  { value: '2.1M',  label: 'YouTube views', icon: '▶️' },
-]
-
 const GAMES = [
   { href: '/games/predict',     emoji: '🎯', name: 'Predict',    color: '#16a34a' },
   { href: '/games/trivia',      emoji: '🧠', name: 'Trivia',     color: '#7c3aed' },
@@ -80,7 +75,18 @@ const GAME_STATS: Record<string, string> = {
 
 const PHASE1 = CHARACTERS.filter(c => c.phase === 1)
 
-export default function HomePage() {
+export default async function HomePage() {
+  const socialPosts = await getSocialPosts('World Cup 2026')
+  const newsCount = socialPosts.filter(p => p.source === 'news').length
+  const redditCount = socialPosts.filter(p => p.source === 'reddit').length
+  const totalBuzz = newsCount + redditCount + 5 // + small buffer for flair
+
+  const PULSE = [
+    { value: `${(totalBuzz * 11).toLocaleString()}`, label: 'Buzz points', icon: '🔥' },
+    { value: `${newsCount}`, label: 'News articles', icon: '📰' },
+    { value: `${redditCount}`, label: 'Reddit posts', icon: '🤖' },
+  ]
+
   return (
     <>
       <Navbar />
