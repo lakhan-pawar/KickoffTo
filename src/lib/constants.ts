@@ -101,7 +101,7 @@ export const CHARACTERS: Character[] = [
   },
   // Phase 3 — Original (4)
   {
-    id: 'multiverse', name: 'The Multiverse', monogram: 'MV', icon: '🌀',
+    id: 'the-multiverse', name: 'The Multiverse', monogram: 'MV', icon: '🌀',
     role: 'Alternate Timelines', tier: 'Entertainment', phase: 3,
     color: '#2a1a3a', model: 'llama-3.3-70b-versatile', voiceId: 'Fenrir',
     bio: 'Has witnessed all possible versions of WC2026. Speaks in probabilities and butterfly effects.',
@@ -109,7 +109,7 @@ export const CHARACTERS: Character[] = [
     suggested: ['What if Canada wins the World Cup?', 'Simulate a timeline where Messi missed in 2022', 'What changes if VAR never existed?'],
   },
   {
-    id: 'psychologist', name: 'The Psychologist', monogram: 'PS', icon: '🧬',
+    id: 'the-psychologist', name: 'The Psychologist', monogram: 'PS', icon: '🧬',
     role: 'Mind Reader', tier: 'Data', phase: 3,
     color: '#1a2a3a', model: 'llama-3.3-70b-versatile', voiceId: 'Aoede',
     bio: 'Reads player pressure and body language. Predicts turning points from mental state.',
@@ -125,7 +125,7 @@ export const CHARACTERS: Character[] = [
     suggested: ['Describe a Messi goal as abstract art', 'Paint the atmosphere of a stadium', 'Write a poem about WC2026'],
   },
   {
-    id: 'antagonist', name: 'The Antagonist', monogram: 'AN', icon: '⚡',
+    id: 'the-antagonist', name: 'The Antagonist', monogram: 'AN', icon: '⚡',
     role: 'Always Disagrees', tier: 'Entertainment', phase: 3,
     color: '#2a0a0a', model: 'llama-3.1-8b-instant', voiceId: 'Fenrir',
     bio: 'Engineered to disagree. Your team will not win. Your prediction is wrong.',

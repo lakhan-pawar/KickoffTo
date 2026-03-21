@@ -192,32 +192,38 @@ export function ChatPanel({ character, compact }: ChatPanelProps) {
               }
             }}
             placeholder={`Ask ${character.name}...`}
+            autoComplete="off"
+            autoCorrect="off"
             style={{
-              flex: 1, background: 'var(--bg-elevated)',
-              border: `1px solid ${input ? character.color + '66' : 'var(--border)'}`,
-              borderRadius: 22, padding: '10px 16px',
+              flex: 1,
+              background: 'var(--bg-elevated)',
+              border: `1px solid ${input ? character.color + '88' : 'var(--border)'}`,
+              borderRadius: 24, padding: '12px 18px',
               fontSize: 15, color: 'var(--text)', outline: 'none',
-              minHeight: 44, transition: 'border-color 0.2s',
+              minHeight: 48, transition: 'border-color 0.2s',
+              fontFamily: 'var(--font-body)',
             }}
           />
           <button
+            type="button"
             onClick={e => {
               if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate(6)
               handleSubmit(e as any)
             }}
             disabled={isLoading || !input.trim()}
+            aria-label="Send message"
             style={{
-              width: 44, height: 44, borderRadius: '50%', flexShrink: 0,
+              width: 48, height: 48, borderRadius: '50%', flexShrink: 0,
               background: input.trim() && !isLoading
-                ? `linear-gradient(135deg, ${character.color}, ${character.color}cc)`
+                ? character.color
                 : 'var(--bg-elevated)',
               border: `1px solid ${input.trim() ? 'transparent' : 'var(--border)'}`,
               color: input.trim() && !isLoading ? '#fff' : 'var(--text-3)',
               cursor: isLoading || !input.trim() ? 'not-allowed' : 'pointer',
-              fontSize: 18,
+              fontSize: 20,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               boxShadow: input.trim() && !isLoading
-                ? `0 2px 12px ${character.color}55` : 'none',
+                ? `0 2px 16px ${character.color}55` : 'none',
               transition: 'all 0.2s',
             }}
           >
