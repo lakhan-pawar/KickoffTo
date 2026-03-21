@@ -21,102 +21,134 @@ export default function GroupsPage() {
 
         <h1 style={{
           fontFamily: 'var(--font-display)', fontWeight: 900,
-          fontSize: 28, letterSpacing: -0.5, color: 'var(--text)', marginBottom: 6,
+          fontSize: 28, letterSpacing: -0.5, color: 'var(--text)', marginBottom: 4,
         }}>
           GROUPS
         </h1>
         <p style={{ fontSize: 12, color: 'var(--text-3)', marginBottom: 20 }}>
-          12 groups · 48 teams · Top 2 from each advance
+          12 groups · 48 teams · Top 2 advance to Round of 32
         </p>
 
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
           gap: 12,
         }}>
           {groups.map(group => (
             <div key={group.letter} style={{
-              background: 'var(--bg-card)', border: '1px solid var(--border)',
               borderRadius: 16, overflow: 'hidden',
+              background: 'var(--bg-card)',
+              border: '1px solid var(--border)',
             }}>
-              {/* Group header with kit colour stripe */}
-              <div style={{ height: 4, display: 'flex' }}>
+
+              {/* Kit colour rainbow stripe */}
+              <div style={{ height: 5, display: 'flex' }}>
                 {group.teams.map(t => (
-                  <div key={t.code} style={{
-                    flex: 1, background: t.kitColors[0],
-                  }} />
+                  <div key={t.code} style={{ flex: 1, background: t.kitColors[0] }} />
                 ))}
               </div>
 
-              <div style={{ padding: '12px 14px 6px' }}>
+              {/* Group header */}
+              <div style={{
+                padding: '12px 14px 10px',
+                display: 'flex', alignItems: 'center',
+                justifyContent: 'space-between',
+                borderBottom: '1px solid var(--border)',
+              }}>
                 <div style={{
                   fontFamily: 'var(--font-display)', fontWeight: 900,
-                  fontSize: 22, color: 'var(--text)', letterSpacing: -0.5,
-                  marginBottom: 12,
+                  fontSize: 20, color: 'var(--text)', letterSpacing: -0.5,
                 }}>
                   Group {group.letter}
                 </div>
+                {/* Mini flags row */}
+                <div style={{ display: 'flex', gap: 3 }}>
+                  {group.teams.map(t => (
+                    <span key={t.code} style={{ fontSize: 18 }}>{t.flag}</span>
+                  ))}
+                </div>
+              </div>
 
-                {/* Column headers */}
+              {/* Standings table */}
+              <div>
+                {/* Header */}
                 <div style={{
-                  display: 'grid',
-                  gridTemplateColumns: '1fr 28px 28px 28px 28px 32px',
-                  gap: 4, marginBottom: 6,
-                  fontSize: 9, fontWeight: 700, color: 'var(--text-3)',
-                  textTransform: 'uppercase', letterSpacing: '0.06em',
-                  paddingLeft: 48,
+                  display: 'flex', padding: '6px 14px',
+                  background: 'var(--bg-elevated)',
+                  borderBottom: '1px solid var(--border)',
                 }}>
-                  <span />
-                  <span style={{ textAlign: 'center' }}>P</span>
-                  <span style={{ textAlign: 'center' }}>W</span>
-                  <span style={{ textAlign: 'center' }}>D</span>
-                  <span style={{ textAlign: 'center' }}>L</span>
-                  <span style={{ textAlign: 'center' }}>Pts</span>
+                  <span style={{ flex: 1, fontSize: 9, fontWeight: 700,
+                    color: 'var(--text-3)', textTransform: 'uppercase',
+                    letterSpacing: '0.06em' }}>
+                    Team
+                  </span>
+                  {['P','W','D','L','Pts'].map(h => (
+                    <span key={h} style={{
+                      width: 28, textAlign: 'center',
+                      fontSize: 9, fontWeight: 700,
+                      color: 'var(--text-3)', textTransform: 'uppercase',
+                      letterSpacing: '0.06em',
+                    }}>
+                      {h}
+                    </span>
+                  ))}
                 </div>
 
-                {/* Teams */}
+                {/* Team rows */}
                 {group.teams.map((team, i) => (
-                  <Link
-                    key={team.code}
-                    href={`/teams/${team.code.toLowerCase()}`}
-                    style={{ textDecoration: 'none' }}
-                  >
+                  <Link key={team.code} href={`/teams/${team.code.toLowerCase()}`}
+                    style={{ textDecoration: 'none' }}>
                     <div style={{
-                      display: 'grid',
-                      gridTemplateColumns: '32px 1fr 28px 28px 28px 28px 32px',
-                      gap: 4, alignItems: 'center',
-                      padding: '7px 0',
-                      borderTop: i > 0 ? '1px solid var(--border)' : 'none',
-                      cursor: 'pointer',
-                    }}>
-                      {/* Rank */}
+                      display: 'flex', alignItems: 'center',
+                      padding: '9px 14px',
+                      borderBottom: i < group.teams.length - 1
+                        ? '1px solid var(--border)' : 'none',
+                      gap: 8, cursor: 'pointer',
+                      transition: 'background 0.1s',
+                    }}
+                    >
+                      {/* Position */}
                       <span style={{
-                        fontSize: 11, fontWeight: 700, textAlign: 'center',
+                        fontSize: 11, fontWeight: 700, width: 16,
                         color: i < 2 ? 'var(--green)' : 'var(--text-3)',
+                        flexShrink: 0, textAlign: 'center',
                       }}>
                         {i + 1}
                       </span>
 
-                      {/* Flag + Name */}
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
-                        <span style={{ fontSize: 20 }}>{team.flag}</span>
-                        <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text)' }}>
-                          {team.name.length > 11 ? team.name.slice(0, 11) + '…' : team.name}
-                        </span>
-                      </div>
+                      {/* Kit swatch */}
+                      <div style={{
+                        width: 4, height: 28, borderRadius: 2,
+                        background: team.kitColors[0], flexShrink: 0,
+                      }} />
 
-                      {/* Stats — all 0 pre-tournament */}
+                      {/* Flag */}
+                      <span style={{ fontSize: 22, flexShrink: 0 }}>{team.flag}</span>
+
+                      {/* Full name — no truncation */}
+                      <span style={{
+                        flex: 1, fontSize: 13, fontWeight: 500,
+                        color: 'var(--text)', minWidth: 0,
+                      }}>
+                        {team.name}
+                      </span>
+
+                      {/* Stats */}
                       {[0, 0, 0, 0].map((v, j) => (
                         <span key={j} style={{
+                          width: 28, textAlign: 'center',
                           fontSize: 12, color: 'var(--text-3)',
-                          textAlign: 'center', fontVariantNumeric: 'tabular-nums',
+                          fontVariantNumeric: 'tabular-nums', flexShrink: 0,
                         }}>
-                          {v}
+                          0
                         </span>
                       ))}
+                      {/* Points */}
                       <span style={{
-                        fontSize: 13, fontWeight: 700, color: 'var(--text)',
-                        textAlign: 'center', fontVariantNumeric: 'tabular-nums',
+                        width: 28, textAlign: 'center',
+                        fontSize: 13, fontWeight: 700,
+                        color: 'var(--text)',
+                        fontVariantNumeric: 'tabular-nums', flexShrink: 0,
                       }}>
                         0
                       </span>
@@ -125,20 +157,18 @@ export default function GroupsPage() {
                 ))}
               </div>
 
+              {/* Footer */}
               <div style={{
-                padding: '8px 14px',
-                borderTop: '1px solid var(--border)',
+                padding: '7px 14px',
                 background: 'var(--bg-elevated)',
-                display: 'flex', justifyContent: 'space-between',
-                alignItems: 'center',
+                display: 'flex', justifyContent: 'space-between', alignItems: 'center',
               }}>
                 <span style={{
-                  fontSize: 9, color: 'var(--green)', fontWeight: 700,
-                  textTransform: 'uppercase', letterSpacing: '0.06em',
+                  fontSize: 10, color: 'var(--green)', fontWeight: 700,
                 }}>
-                  Top 2 advance
+                  ↑ Top 2 advance
                 </span>
-                <span style={{ fontSize: 9, color: 'var(--text-3)' }}>
+                <span style={{ fontSize: 10, color: 'var(--text-3)' }}>
                   From June 11
                 </span>
               </div>

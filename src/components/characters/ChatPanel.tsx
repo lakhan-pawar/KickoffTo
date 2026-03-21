@@ -9,9 +9,10 @@ import type { Character } from '@/types'
 
 interface ChatPanelProps {
   character: Character
+  compact?: boolean
 }
 
-export function ChatPanel({ character }: ChatPanelProps) {
+export function ChatPanel({ character, compact }: ChatPanelProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const [apiStatus, setApiStatus] = useState<'unknown' | 'ok' | 'error'>('unknown')
   const [apiError, setApiError] = useState('')
@@ -70,6 +71,159 @@ export function ChatPanel({ character }: ChatPanelProps) {
       })
   }, [])
 
+  // In compact mode, use full-height flex layout
+  if (compact) {
+    return (
+      <div style={{
+        flex: 1, display: 'flex', flexDirection: 'column',
+        overflow: 'hidden', background: 'var(--bg)',
+      }}>
+        {/* Messages */}
+        <div style={{
+          flex: 1, overflowY: 'auto', padding: '12px 14px',
+          display: 'flex', flexDirection: 'column', gap: 10,
+        }}>
+          {messages.map(message => (
+            <div key={message.id} style={{
+              display: 'flex',
+              justifyContent: message.role === 'user' ? 'flex-end' : 'flex-start',
+            }}>
+              {message.role === 'assistant' && (
+                <div style={{
+                  width: 26, height: 26, borderRadius: 8,
+                  background: character.color, flexShrink: 0,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontFamily: 'var(--font-display)', fontWeight: 900,
+                  fontSize: 9, color: 'rgba(255,255,255,0.9)',
+                  marginRight: 8, alignSelf: 'flex-end',
+                }}>
+                  {character.monogram}
+                </div>
+              )}
+              <div style={{
+                maxWidth: '78%', padding: '10px 14px',
+                borderRadius: message.role === 'user'
+                  ? '18px 18px 4px 18px'
+                  : '18px 18px 18px 4px',
+                fontSize: 14, lineHeight: 1.55,
+                background: message.role === 'user'
+                  ? 'linear-gradient(135deg, #16a34a, #15803d)'
+                  : 'var(--bg-elevated)',
+                color: message.role === 'user' ? '#fff' : 'var(--text)',
+                border: message.role === 'user'
+                  ? 'none'
+                  : '1px solid var(--border)',
+                boxShadow: message.role === 'user'
+                  ? '0 2px 12px rgba(22,163,74,0.35)'
+                  : 'none',
+              }}>
+                {message.content || (
+                  <span style={{ color: 'var(--text-3)', fontStyle: 'italic', fontSize: 12 }}>
+                    Empty response — check Groq API key
+                  </span>
+                )}
+              </div>
+            </div>
+          ))}
+
+          {/* Typing indicator */}
+          {isLoading && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <div style={{
+                width: 26, height: 26, borderRadius: 8,
+                background: character.color, flexShrink: 0,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontFamily: 'var(--font-display)', fontWeight: 900,
+                fontSize: 9, color: 'rgba(255,255,255,0.9)',
+              }}>
+                {character.monogram}
+              </div>
+              <div style={{
+                background: 'var(--bg-elevated)',
+                border: '1px solid var(--border)',
+                borderRadius: '18px 18px 18px 4px',
+                padding: '10px 14px',
+                display: 'flex', gap: 5, alignItems: 'center',
+              }}>
+                {[0, 1, 2].map(i => (
+                  <span key={i} style={{
+                    width: 7, height: 7, borderRadius: '50%',
+                    background: character.color, display: 'inline-block',
+                    animation: 'typingBounce 0.8s ease-in-out infinite',
+                    animationDelay: `${i * 0.15}s`,
+                  }} />
+                ))}
+              </div>
+            </div>
+          )}
+          <div ref={messagesEndRef} />
+        </div>
+
+        {/* Error banner */}
+        {(apiStatus === 'error' || error) && (
+          <div style={{
+            margin: '0 14px 8px',
+            background: 'rgba(220,38,38,0.1)',
+            border: '1px solid rgba(220,38,38,0.25)',
+            borderRadius: 10, padding: '8px 12px',
+            fontSize: 12, color: '#f87171',
+          }}>
+            {apiError || error?.message || 'Chat connection issue — check API keys'}
+          </div>
+        )}
+
+        {/* Input — sticky at bottom */}
+        <div style={{
+          padding: '10px 14px 12px',
+          borderTop: '1px solid var(--border)',
+          background: 'var(--bg)',
+          display: 'flex', gap: 8, alignItems: 'flex-end',
+        }}>
+          <input
+            type="text"
+            value={input}
+            onChange={handleInputChange}
+            onKeyDown={e => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault()
+                handleSubmit(e as any)
+              }
+            }}
+            placeholder={`Ask ${character.name}...`}
+            style={{
+              flex: 1, background: 'var(--bg-elevated)',
+              border: `1px solid ${input ? character.color + '66' : 'var(--border)'}`,
+              borderRadius: 22, padding: '10px 16px',
+              fontSize: 15, color: 'var(--text)', outline: 'none',
+              minHeight: 44, transition: 'border-color 0.2s',
+            }}
+          />
+          <button
+            onClick={handleSubmit as any}
+            disabled={isLoading || !input.trim()}
+            style={{
+              width: 44, height: 44, borderRadius: '50%', flexShrink: 0,
+              background: input.trim() && !isLoading
+                ? `linear-gradient(135deg, ${character.color}, ${character.color}cc)`
+                : 'var(--bg-elevated)',
+              border: `1px solid ${input.trim() ? 'transparent' : 'var(--border)'}`,
+              color: input.trim() && !isLoading ? '#fff' : 'var(--text-3)',
+              cursor: isLoading || !input.trim() ? 'not-allowed' : 'pointer',
+              fontSize: 18,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              boxShadow: input.trim() && !isLoading
+                ? `0 2px 12px ${character.color}55` : 'none',
+              transition: 'all 0.2s',
+            }}
+          >
+            {isLoading ? '⋯' : '↑'}
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  // Non-compact: original layout
   return (
     <div style={{
       background: 'var(--bg-card)',

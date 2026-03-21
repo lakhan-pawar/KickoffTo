@@ -1,14 +1,10 @@
 'use client'
-import { useEffect, useState } from 'react'
-import { notFound } from 'next/navigation'
 import { useParams } from 'next/navigation'
 import { Navbar } from '@/components/ui/Navbar'
-import { Ticker } from '@/components/ui/Ticker'
 import { BottomNav } from '@/components/ui/BottomNav'
-import { CHARACTERS, CHARACTER_MAP } from '@/lib/constants'
-import { ShareButton } from '@/components/characters/ShareButton'
-import { SuggestedPrompts } from '@/components/characters/SuggestedPrompts'
 import { ChatPanel } from '@/components/characters/ChatPanel'
+import { CHARACTER_MAP } from '@/lib/constants'
+import Link from 'next/link'
 
 export default function CharacterPage() {
   const params = useParams()
@@ -17,138 +13,155 @@ export default function CharacterPage() {
 
   if (!character) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center',
-        justifyContent: 'center', background: 'var(--bg)' }}>
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ fontFamily: 'var(--font-display)', fontSize: 48,
-            fontWeight: 900, color: 'transparent',
-            WebkitTextStroke: '1px var(--border)', marginBottom: 16 }}>404</div>
-          <p style={{ color: 'var(--text-2)', marginBottom: 16 }}>Character not found</p>
-          <a href="/characters" style={{ color: 'var(--green)', fontSize: 13 }}>
+      <>
+        <Navbar />
+        <main style={{ padding: '60px 16px', textAlign: 'center' }}>
+          <div style={{
+            fontFamily: 'var(--font-display)', fontSize: 48, fontWeight: 900,
+            color: 'transparent', WebkitTextStroke: '1px var(--border)',
+          }}>
+            404
+          </div>
+          <p style={{ color: 'var(--text-2)', marginTop: 12, marginBottom: 20 }}>
+            Character not found
+          </p>
+          <Link href="/characters" style={{ color: 'var(--green)', fontSize: 13 }}>
             ← All characters
-          </a>
-        </div>
-      </div>
+          </Link>
+        </main>
+        <BottomNav />
+      </>
     )
   }
 
   return (
-    <>
-      <Navbar />
-      <Ticker segments={[
-        `Chatting with ${character.name} · ${character.role}`,
-        character.bio,
-        `Share: kickoffto.com/characters/${character.id}`,
-      ]} />
+    <div style={{
+      display: 'flex', flexDirection: 'column',
+      height: '100dvh', overflow: 'hidden',
+    }}>
 
-      <main style={{ maxWidth: 1100, margin: '0 auto', padding: '24px 16px 100px' }}>
+      {/* ── Identity header — colour floods ─────────── */}
+      <div style={{
+        background: character.color,
+        padding: '0 14px 0',
+        flexShrink: 0,
+        position: 'relative',
+        overflow: 'hidden',
+      }}>
+        {/* Ghost monogram watermark */}
         <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'minmax(0,1fr)',
-          gap: 20,
+          position: 'absolute', right: -16, top: -8,
+          fontFamily: 'var(--font-display)', fontWeight: 900,
+          fontSize: 96, color: 'rgba(255,255,255,0.08)',
+          letterSpacing: -4, lineHeight: 1,
+          pointerEvents: 'none', userSelect: 'none',
         }}>
+          {character.monogram}
+        </div>
 
-          {/* Info panel */}
-          <div style={{
-            background: 'var(--bg-card)',
-            border: '1px solid var(--border)',
-            borderLeft: `3px solid ${character.color}`,
-            borderRadius: '0 12px 12px 0',
-            padding: 20,
+        {/* Navbar-height spacer */}
+        <div style={{ height: 52 }} />
+
+        {/* Back + name row */}
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: 10,
+          paddingBottom: 14,
+        }}>
+          <Link href="/characters" style={{
+            width: 32, height: 32, borderRadius: 8,
+            background: 'rgba(0,0,0,0.3)',
+            backdropFilter: 'blur(8px)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            color: '#fff', fontSize: 16, textDecoration: 'none', flexShrink: 0,
           }}>
-            <a href="/characters" style={{
-              fontSize: 12, color: 'var(--green)', textDecoration: 'none',
-              display: 'inline-flex', alignItems: 'center', gap: 4, marginBottom: 16,
-            }}>
-              ← All characters
-            </a>
+            ←
+          </Link>
 
-            {/* Avatar */}
+          {/* Monogram */}
+          <div style={{
+            width: 44, height: 44, borderRadius: 12,
+            background: 'rgba(0,0,0,0.35)',
+            backdropFilter: 'blur(10px)',
+            border: '1px solid rgba(255,255,255,0.15)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontFamily: 'var(--font-display)', fontWeight: 900,
+            fontSize: 16, color: 'rgba(255,255,255,0.9)',
+            flexShrink: 0,
+          }}>
+            {character.monogram}
+          </div>
+
+          <div style={{ flex: 1, minWidth: 0 }}>
             <div style={{
-              width: 64, height: 64, borderRadius: 14,
-              background: character.color,
-              boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.1)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
               fontFamily: 'var(--font-display)', fontWeight: 800,
-              fontSize: 22, color: 'rgba(255,255,255,0.85)',
-              marginBottom: 14,
-            }}>
-              {character.monogram}
-            </div>
-
-            <h1 style={{
-              fontFamily: 'var(--font-display)', fontWeight: 800,
-              fontSize: 22, letterSpacing: -0.3,
-              color: 'var(--text)', marginBottom: 4,
+              fontSize: 18, color: '#fff', letterSpacing: -0.3,
+              lineHeight: 1.1,
             }}>
               {character.name}
-            </h1>
-            <p style={{ fontSize: 11, color: 'var(--text-3)', marginBottom: 12 }}>
-              {character.role} · {character.tier}
-            </p>
-
-            {/* Online dot */}
-            <div style={{
-              display: 'flex', alignItems: 'center', gap: 6,
-              marginBottom: 14, fontSize: 12, color: 'var(--green)',
-            }}>
-              <span style={{
-                width: 6, height: 6, borderRadius: '50%',
-                background: 'var(--green)', display: 'inline-block',
-                animation: 'livePulse 1.5s ease-in-out infinite',
-              }} />
-              Online · Ready
             </div>
-
-            <p style={{
-              fontSize: 13, color: 'var(--text-2)',
-              lineHeight: 1.7, marginBottom: 16,
+            <div style={{
+              fontSize: 11, color: 'rgba(255,255,255,0.65)',
+              marginTop: 1,
             }}>
-              {character.bio}
-            </p>
-
-            <ShareButton characterId={character.id} />
-            <a
-              href={`/share/character/${character.id}`}
-              style={{
-                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
-                width: '100%', padding: '8px 12px', marginTop: 6,
-                background: 'var(--bg-elevated)', border: '1px solid var(--border)',
-                borderRadius: 8, fontSize: 12, fontWeight: 500,
-                color: 'var(--text-3)', textDecoration: 'none',
-              }}
-            >
-              📱 Share quote card →
-            </a>
-
-            <div style={{ marginTop: 14 }}>
-              <p style={{
-                fontSize: 10, fontWeight: 700, color: 'var(--text-3)',
-                textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8,
-              }}>
-                Try asking
-              </p>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                {character.suggested.map(prompt => (
-                  <div key={prompt} style={{
-                    background: 'var(--bg-elevated)',
-                    border: '1px solid var(--border)',
-                    borderRadius: 8, padding: '8px 10px',
-                    fontSize: 12, color: 'var(--text-2)',
-                  }}>
-                    {prompt}
-                  </div>
-                ))}
-              </div>
+              {character.role}
             </div>
           </div>
 
-          {/* Chat */}
-          <ChatPanel character={character} />
-
+          {/* Online status */}
+          <div style={{
+            display: 'flex', alignItems: 'center', gap: 4,
+            background: 'rgba(0,0,0,0.35)',
+            backdropFilter: 'blur(8px)',
+            borderRadius: 99, padding: '4px 10px',
+            border: '1px solid rgba(255,255,255,0.12)',
+            flexShrink: 0,
+          }}>
+            <span style={{
+              width: 6, height: 6, borderRadius: '50%',
+              background: '#4ade80', display: 'inline-block',
+              animation: 'livePulse 1.5s ease-in-out infinite',
+            }} />
+            <span style={{ fontSize: 10, color: '#4ade80', fontWeight: 700 }}>
+              Online
+            </span>
+          </div>
         </div>
-      </main>
+
+        {/* Suggested prompts horizontal scroll */}
+        <div style={{
+          display: 'flex', gap: 6,
+          overflowX: 'auto', paddingBottom: 12,
+          scrollbarWidth: 'none',
+        }}>
+          {character.suggested.slice(0, 4).map(prompt => (
+            <div key={prompt} style={{
+              background: 'rgba(0,0,0,0.3)',
+              backdropFilter: 'blur(8px)',
+              border: '1px solid rgba(255,255,255,0.12)',
+              borderRadius: 99, padding: '5px 12px',
+              fontSize: 11, color: 'rgba(255,255,255,0.8)',
+              whiteSpace: 'nowrap', cursor: 'pointer', flexShrink: 0,
+              fontWeight: 500,
+            }}>
+              {prompt}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Sticky Navbar above the coloured header */}
+      <div style={{
+        position: 'absolute', top: 0, left: 0, right: 0, zIndex: 200,
+      }}>
+        <Navbar />
+      </div>
+
+      {/* ── Chat area — fills remaining height ──────── */}
+      <div style={{ flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+        <ChatPanel character={character} compact />
+      </div>
+
       <BottomNav />
-    </>
+    </div>
   )
 }
