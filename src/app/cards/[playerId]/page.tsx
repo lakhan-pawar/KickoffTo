@@ -25,6 +25,8 @@ function getMockPlayer(playerId: string) {
       kitColors: ['#75aadb', '#ffffff'],
       stats: { goals: 6, assists: 4, appearances: 7, rating: 9.2 },
       rarity: 'gold',
+      number: 10,
+      highlights: ['2022 World Cup Winner', 'Record 8 Ballon d\'Or', 'All-time WC goal record holder'],
     },
     'mbappe': {
       id: 'mbappe', name: 'K. Mbappé', fullName: 'Kylian Mbappé',
@@ -33,6 +35,8 @@ function getMockPlayer(playerId: string) {
       kitColors: ['#003087', '#ffffff'],
       stats: { goals: 5, assists: 3, appearances: 7, rating: 8.9 },
       rarity: 'gold',
+      number: 9,
+      highlights: ['2022 Golden Boot · 8 goals', 'Youngest French WC finalist', 'Champions League winner 2024'],
     },
     'davies': {
       id: 'davies', name: 'A. Davies', fullName: 'Alphonso Davies',
@@ -41,6 +45,8 @@ function getMockPlayer(playerId: string) {
       kitColors: ['#e31837', '#ffffff'],
       stats: { goals: 1, assists: 3, appearances: 6, rating: 8.1 },
       rarity: 'silver',
+      number: 19,
+      highlights: ['Canada\'s highest paid player', 'Bundesliga champion × 6', 'Hosting WC2026 on home soil'],
     },
     'bellingham': {
       id: 'bellingham', name: 'J. Bellingham', fullName: 'Jude Bellingham',
