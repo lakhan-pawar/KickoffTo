@@ -1,5 +1,5 @@
 // src/lib/unrealspeech.ts
-// Uses v8 /stream endpoint — returns base64 audio data URI directly
+// Based on confirmed working v8 API protocol
 
 const KEYS = [
   process.env.UNREAL_SPEECH_API_KEY_1,
@@ -16,19 +16,41 @@ function nextKey(): string | null {
   return key
 }
 
-// Genre-matched voices and settings
+// v8 voice IDs confirmed working
+// Available: Sierra, Jasper, Aria, Nova, Eric, Liam, Ryan
 export const GENRE_CONFIG: Record<string, {
   voice: string
-  speed: string
-  pitch: string
+  speed: number
+  pitch: number
   label: string
 }> = {
-  horror:  { voice: 'Dan',      speed: '-0.3', pitch: '0.85', label: 'Dan — deep & eerie'      },
-  romance: { voice: 'Liv',      speed: '-0.1', pitch: '1.05', label: 'Liv — warm & emotional'  },
-  heist:   { voice: 'Will',     speed: '0.1',  pitch: '1.0',  label: 'Will — sharp & confident'},
-  scifi:   { voice: 'Scarlett', speed: '0.0',  pitch: '1.1',  label: 'Scarlett — clear & cool' },
-  western: { voice: 'Dan',      speed: '-0.2', pitch: '0.9',  label: 'Dan — gruff & measured'  },
-  comedy:  { voice: 'Freya',    speed: '0.2',  pitch: '1.1',  label: 'Freya — light & playful' },
+  horror:  { voice: 'Jasper', speed: -0.3, pitch: 0.85, label: 'Jasper — deep & eerie'       },
+  romance: { voice: 'Aria',   speed: -0.1, pitch: 1.05, label: 'Aria — warm & emotional'     },
+  heist:   { voice: 'Ryan',   speed:  0.1, pitch: 1.0,  label: 'Ryan — sharp & confident'    },
+  scifi:   { voice: 'Sierra', speed:  0.0, pitch: 1.1,  label: 'Sierra — clear & futuristic' },
+  western: { voice: 'Liam',   speed: -0.2, pitch: 0.9,  label: 'Liam — gruff & measured'     },
+  comedy:  { voice: 'Nova',   speed:  0.2, pitch: 1.1,  label: 'Nova — light & playful'      },
+}
+
+// Smart truncation — find last complete sentence under 950 chars
+function prepareText(text: string): string {
+  const paragraphs = text.split(/\n\n+/).filter(p => p.trim().length > 0)
+  if (paragraphs.length === 0) return text.slice(0, 950)
+
+  let result = ''
+  for (const para of paragraphs) {
+    const candidate = result ? `${result}\n\n${para.trim()}` : para.trim()
+    if (candidate.length > 950) break
+    result = candidate
+  }
+
+  if (!result) {
+    const first = paragraphs[0].slice(0, 950)
+    const lastDot = first.search(/[.!?][^.!?]*$/)
+    return lastDot > 100 ? first.slice(0, lastDot + 1) : first
+  }
+
+  return result
 }
 
 export interface TTSResult {
@@ -39,33 +61,6 @@ export interface TTSResult {
   usedLength?: number
 }
 
-function prepareForStream(text: string): string {
-  // Try to get first complete paragraph (ends with \n\n or double newline)
-  const paragraphs = text.split(/\n\n+/).filter(p => p.trim().length > 0)
-
-  if (paragraphs.length === 0) return text.slice(0, 950)
-
-  // Build up paragraphs until we hit 950 chars (leave buffer below 1000)
-  let result = ''
-  for (const para of paragraphs) {
-    const candidate = result ? result + '\n\n' + para.trim() : para.trim()
-    if (candidate.length > 950) break
-    result = candidate
-  }
-
-  // If even first paragraph is too long, truncate at last sentence
-  if (!result || result.length === 0) {
-    const firstPara = paragraphs[0].slice(0, 950)
-    // Find last sentence ending
-    const lastSentence = firstPara.search(/[.!?][^.!?]*$/)
-    return lastSentence > 100
-      ? firstPara.slice(0, lastSentence + 1)
-      : firstPara
-  }
-
-  return result
-}
-
 export async function textToSpeech(
   text: string,
   genre: string = 'heist'
@@ -73,37 +68,34 @@ export async function textToSpeech(
   if (KEYS.length === 0) {
     return {
       audioDataUri: null,
-      error: 'No UNREAL_SPEECH_API_KEY configured. Add UNREAL_SPEECH_API_KEY_1 to Vercel.',
+      error: 'No UNREAL_SPEECH_API_KEY configured in Vercel environment variables.',
     }
   }
 
-  const config = GENRE_CONFIG[genre] ?? GENRE_CONFIG.heist
-
-  const truncated = prepareForStream(text)
-  const useStream = truncated.length <= 1000
+  const config   = GENRE_CONFIG[genre] ?? GENRE_CONFIG.heist
+  const prepared = prepareText(text)
 
   for (let attempt = 0; attempt < KEYS.length; attempt++) {
     const key = nextKey()
     if (!key) continue
 
     try {
-      const endpoint = useStream
-        ? 'https://api.v8.unrealspeech.com/stream'
-        : 'https://api.v8.unrealspeech.com/speech'
-
-      const res = await fetch(endpoint, {
+      const res = await fetch('https://api.v8.unrealspeech.com/stream', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${key}`,
+          // NO "Bearer" prefix — raw key only (confirmed from working curl)
+          'Authorization': key,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          Text: truncated,
-          VoiceId: config.voice,
-          Bitrate: '192k',
-          Speed: config.speed,
-          Pitch: config.pitch,
-          Codec: 'libmp3lame',
+          Text:          prepared,
+          VoiceId:       config.voice,
+          Bitrate:       '192k',
+          AudioFormat:   'mp3',
+          OutputFormat:  'stream', // stream = raw bytes in response body
+          TimestampType: 'sentence',
+          Speed:         String(config.speed),
+          Pitch:         String(config.pitch),
         }),
       })
 
@@ -117,27 +109,27 @@ export async function textToSpeech(
           const errJson = JSON.parse(errText)
           errMsg = errJson.message ?? errJson.error ?? errMsg
         } catch {
-          errMsg = errText.slice(0, 100) || errMsg
+          errMsg = errText.slice(0, 150) || errMsg
         }
         throw new Error(errMsg)
       }
 
-      // /stream returns raw audio bytes
+      // Read raw bytes and convert to base64 data URI
       const arrayBuffer = await res.arrayBuffer()
 
       if (arrayBuffer.byteLength === 0) {
-        throw new Error('Empty audio response from Unreal Speech')
+        throw new Error('Empty audio response — check voice ID and text length')
       }
 
       // Buffer works in Node.js runtime
-      const base64 = Buffer.from(arrayBuffer).toString('base64')
-      const dataUri = `data:audio/mpeg;base64,${base64}`
+      const base64    = Buffer.from(arrayBuffer).toString('base64')
+      const dataUri   = `data:audio/mpeg;base64,${base64}`
 
       return {
-        audioDataUri: dataUri,
-        voiceUsed: config.label,
+        audioDataUri:   dataUri,
+        voiceUsed:      config.label,
         originalLength: text.length,
-        usedLength: truncated.length,
+        usedLength:     prepared.length,
       }
 
     } catch (err: unknown) {
