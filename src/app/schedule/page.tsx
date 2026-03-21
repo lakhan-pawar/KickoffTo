@@ -4,6 +4,7 @@ import { Navbar } from '@/components/ui/Navbar'
 import { BottomNav } from '@/components/ui/BottomNav'
 import { Ticker } from '@/components/ui/Ticker'
 import Link from 'next/link'
+import { FlagDisplay } from '@/components/ui/FlagDisplay'
 
 const SCHEDULE = [
   // Group stage opening weekend
@@ -216,7 +217,7 @@ export default function SchedulePage() {
                         flex: 1, display: 'flex', alignItems: 'center',
                         gap: 10, minWidth: 200,
                       }}>
-                        <span style={{ fontSize: 20 }}>{fixture.homeTeam.flag}</span>
+                        <FlagDisplay countryCode={fixture.homeTeam.code} emoji={fixture.homeTeam.flag} size={20} />
                         <span style={{
                           fontSize: 13, fontWeight: 600, color: 'var(--text)',
                         }}>
@@ -228,7 +229,7 @@ export default function SchedulePage() {
                         }}>
                           {fixture.awayTeam.name}
                         </span>
-                        <span style={{ fontSize: 20 }}>{fixture.awayTeam.flag}</span>
+                        <FlagDisplay countryCode={fixture.awayTeam.code} emoji={fixture.awayTeam.flag} size={20} />
                         {isCanada && (
                           <span style={{ fontSize: 12 }}>🍁</span>
                         )}

@@ -3,6 +3,7 @@ import { Ticker } from '@/components/ui/Ticker'
 import { BottomNav } from '@/components/ui/BottomNav'
 import { Countdown } from '@/components/ui/Countdown'
 import { CharacterCard } from '@/components/ui/CharacterCard'
+import { FlagDisplay } from '@/components/ui/FlagDisplay'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { CHARACTERS } from '@/lib/constants'
@@ -16,36 +17,36 @@ export const revalidate = 30
 
 const FEATURED_MATCHES = [
   {
-    id: 'can-ven', homeTeam: { name: 'Canada', shortName: 'Canada', flag: '🇨🇦',
+    id: 'can-ven', homeTeam: { name: 'Canada', shortName: 'Canada', flag: '🇨🇦', code: 'CAN',
       kitColors: { home: ['#e31837'], away: ['#fff'] } },
-    awayTeam: { name: 'Venezuela', shortName: 'Venezuela', flag: '🇻🇪',
+    awayTeam: { name: 'Venezuela', shortName: 'Venezuela', flag: '🇻🇪', code: 'VEN',
       kitColors: { home: ['#cf142b'], away: ['#fff'] } },
     homeScore: null, awayScore: null, status: 'scheduled',
     round: 'Group L', venue: 'BMO Field, Toronto',
     kickoff: '2026-06-11T20:00:00Z',
   },
   {
-    id: 'arg-chi', homeTeam: { name: 'Argentina', shortName: 'Argentina', flag: '🇦🇷',
+    id: 'arg-chi', homeTeam: { name: 'Argentina', shortName: 'Argentina', flag: '🇦🇷', code: 'ARG',
       kitColors: { home: ['#75aadb'], away: ['#fff'] } },
-    awayTeam: { name: 'Chile', shortName: 'Chile', flag: '🇨🇱',
+    awayTeam: { name: 'Chile', shortName: 'Chile', flag: '🇨🇱', code: 'CHI',
       kitColors: { home: ['#d52b1e'], away: ['#fff'] } },
     homeScore: null, awayScore: null, status: 'scheduled',
     round: 'Group B', venue: 'MetLife Stadium',
     kickoff: '2026-06-13T15:00:00Z',
   },
   {
-    id: 'esp-bra', homeTeam: { name: 'Spain', shortName: 'Spain', flag: '🇪🇸',
+    id: 'esp-bra', homeTeam: { name: 'Spain', shortName: 'Spain', flag: '🇪🇸', code: 'ESP',
       kitColors: { home: ['#d4213d'], away: ['#ffc400'] } },
-    awayTeam: { name: 'Brazil', shortName: 'Brazil', flag: '🇧🇷',
+    awayTeam: { name: 'Brazil', shortName: 'Brazil', flag: '🇧🇷', code: 'BRA',
       kitColors: { home: ['#f7e03b'], away: ['#009c3b'] } },
     homeScore: null, awayScore: null, status: 'scheduled',
     round: 'Group G', venue: 'AT&T Stadium',
     kickoff: '2026-06-13T21:00:00Z',
   },
   {
-    id: 'eng-can', homeTeam: { name: 'England', shortName: 'England', flag: '🏴',
+    id: 'eng-can', homeTeam: { name: 'England', shortName: 'England', flag: '🏴', code: 'ENG',
       kitColors: { home: ['#cf081f'], away: ['#fff'] } },
-    awayTeam: { name: 'Canada', shortName: 'Canada', flag: '🇨🇦',
+    awayTeam: { name: 'Canada', shortName: 'Canada', flag: '🇨🇦', code: 'CAN',
       kitColors: { home: ['#e31837'], away: ['#fff'] } },
     homeScore: null, awayScore: null, status: 'scheduled',
     round: 'Group H', venue: 'Estadio Azteca',
@@ -97,13 +98,6 @@ export default function HomePage() {
           background: 'radial-gradient(ellipse 80% 60% at 50% 0%, rgba(22,163,74,0.12) 0%, transparent 70%)',
           marginBottom: 4,
         }}>
-          <div style={{
-            fontSize: 11, fontWeight: 700, color: 'var(--green)',
-            textTransform: 'uppercase', letterSpacing: '0.1em',
-            marginBottom: 6, textAlign: 'center',
-          }}>
-            Tournament begins
-          </div>
           <Countdown />
         </section>
 
@@ -166,7 +160,7 @@ export default function HomePage() {
                     {/* Teams */}
                     <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10 }}>
                       <div style={{ flex: 1, textAlign: 'center' }}>
-                        <div style={{ fontSize: 32 }}>{match.homeTeam.flag}</div>
+                        <FlagDisplay countryCode={match.homeTeam.code ?? 'ARG'} emoji={match.homeTeam.flag} size={32} />
                         <div style={{ fontSize: 10, fontWeight: 600, color: 'var(--text)', marginTop: 3 }}>
                           {match.homeTeam.shortName}
                         </div>
@@ -178,7 +172,7 @@ export default function HomePage() {
                         vs
                       </div>
                       <div style={{ flex: 1, textAlign: 'center' }}>
-                        <div style={{ fontSize: 32 }}>{match.awayTeam.flag}</div>
+                        <FlagDisplay countryCode={match.awayTeam.code ?? 'ARG'} emoji={match.awayTeam.flag} size={32} />
                         <div style={{ fontSize: 10, fontWeight: 600, color: 'var(--text)', marginTop: 3 }}>
                           {match.awayTeam.shortName}
                         </div>

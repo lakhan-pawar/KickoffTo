@@ -2,6 +2,7 @@ import { Navbar } from '@/components/ui/Navbar'
 import { BottomNav } from '@/components/ui/BottomNav'
 import Link from 'next/link'
 import type { Metadata } from 'next'
+import { FlagDisplay } from '@/components/ui/FlagDisplay'
 import groupsData from '@/data/wc2026-groups.json'
 
 export const metadata: Metadata = {
@@ -128,7 +129,7 @@ export default function TeamsPage() {
                           filter: 'drop-shadow(0 3px 10px rgba(0,0,0,0.45))',
                           userSelect: 'none',
                         }}>
-                          {team.flag}
+                          <FlagDisplay countryCode={team.code} emoji={team.flag} size={52} />
                         </div>
 
                         {/* Name frosted pill at bottom */}

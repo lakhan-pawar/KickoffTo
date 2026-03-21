@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { formatMatchTime } from '@/lib/timezone'
+import { FlagDisplay } from '@/components/ui/FlagDisplay'
 
 interface TeamInfo {
   name: string; shortName?: string; flag: string
@@ -115,7 +116,7 @@ export function MatchCard({ match }: MatchCardProps) {
           {/* Home */}
           <div style={{ flex: 1, textAlign: 'center' }}>
             <div style={{ fontSize: 36, lineHeight: 1, marginBottom: 4 }}>
-              {match.homeTeam.flag}
+              <FlagDisplay countryCode={match.homeTeam.code ?? 'ARG'} emoji={match.homeTeam.flag} size={36} />
             </div>
             <div style={{
               fontSize: 11, fontWeight: 600, color: 'var(--text)',
@@ -144,7 +145,7 @@ export function MatchCard({ match }: MatchCardProps) {
           {/* Away */}
           <div style={{ flex: 1, textAlign: 'center' }}>
             <div style={{ fontSize: 36, lineHeight: 1, marginBottom: 4 }}>
-              {match.awayTeam.flag}
+              <FlagDisplay countryCode={match.awayTeam.code ?? 'ARG'} emoji={match.awayTeam.flag} size={36} />
             </div>
             <div style={{
               fontSize: 11, fontWeight: 600, color: 'var(--text)',

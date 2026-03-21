@@ -2,6 +2,7 @@ import { Navbar } from '@/components/ui/Navbar'
 import { BottomNav } from '@/components/ui/BottomNav'
 import Link from 'next/link'
 import type { Metadata } from 'next'
+import { FlagDisplay } from '@/components/ui/FlagDisplay'
 import groupsData from '@/data/wc2026-groups.json'
 
 export const metadata: Metadata = {
@@ -64,7 +65,7 @@ export default function GroupsPage() {
                 {/* Mini flags row */}
                 <div style={{ display: 'flex', gap: 3 }}>
                   {group.teams.map(t => (
-                    <span key={t.code} style={{ fontSize: 18 }}>{t.flag}</span>
+                    <FlagDisplay key={t.code} countryCode={t.code} emoji={t.flag} size={18} />
                   ))}
                 </div>
               </div>
@@ -123,7 +124,7 @@ export default function GroupsPage() {
                       }} />
 
                       {/* Flag */}
-                      <span style={{ fontSize: 22, flexShrink: 0 }}>{team.flag}</span>
+                      <FlagDisplay countryCode={team.code} emoji={team.flag} size={22} style={{ flexShrink: 0 }} />
 
                       {/* Full name — no truncation */}
                       <span style={{

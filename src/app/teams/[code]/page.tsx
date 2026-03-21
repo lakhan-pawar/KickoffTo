@@ -4,6 +4,7 @@ import { groqChat } from '@/lib/groq'
 import { getCache, setCache } from '@/lib/redis'
 import Link from 'next/link'
 import type { Metadata } from 'next'
+import { FlagDisplay } from '@/components/ui/FlagDisplay'
 import groupsData from '@/data/wc2026-groups.json'
 
 interface PageProps {
@@ -273,7 +274,7 @@ export default async function TeamPage({ params }: PageProps) {
             position: 'absolute', right: -10, top: -10,
             fontSize: 120, opacity: 0.05, lineHeight: 1, pointerEvents: 'none',
           }}>
-            {team.flag}
+            <FlagDisplay countryCode={team.code} emoji={team.flag} size={120} />
           </div>
 
           {/* Kit strip */}
@@ -285,7 +286,7 @@ export default async function TeamPage({ params }: PageProps) {
             ))}
           </div>
 
-          <div style={{ fontSize: 64, marginBottom: 8 }}>{team.flag}</div>
+          <div style={{ fontSize: 64, marginBottom: 8 }}><FlagDisplay countryCode={team.code} emoji={team.flag} size={64} /></div>
           <h1 style={{
             fontFamily: 'var(--font-display)', fontWeight: 800,
             fontSize: 32, letterSpacing: -0.5, color: 'var(--text)', marginBottom: 6,
