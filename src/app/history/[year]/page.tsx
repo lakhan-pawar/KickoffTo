@@ -6,12 +6,13 @@ import type { Metadata } from 'next'
 import wcHistory from '@/data/wc-history.json'
 
 const HISTORY_FLAG_ISO: Record<string,string> = {
-  URU:'uy', ITA:'it', GER:'de', BRA:'br', ENG:'gb-eng',
-  ARG:'ar', FRA:'fr', ESP:'es',
+  'Uruguay':'uy', 'Italy':'it', 'Germany':'de', 'West Germany':'de',
+  'Brazil':'br', 'England':'gb-eng', 'Argentina':'ar',
+  'France':'fr', 'Spain':'es',
 }
 
-function getHistoryFlag(winnerCode: string): string {
-  return HISTORY_FLAG_ISO[winnerCode] ?? 'un'
+function getHistoryFlag(winnerName: string): string {
+  return HISTORY_FLAG_ISO[winnerName] ?? 'un'
 }
 
 interface PageProps {
@@ -77,7 +78,7 @@ export default async function HistoryYearPage({ params }: PageProps) {
         {/* Winner + host */}
         <div style={{ textAlign:'center', marginBottom:16 }}>
           <img
-            src={`https://flagcdn.com/w160/${getHistoryFlag(wc.winnerCode ?? '')}.png`}
+            src={`https://flagcdn.com/w160/${getHistoryFlag(wc.winner ?? '')}.png`}
             alt={wc.winner}
             style={{
               width:96, height:'auto',
