@@ -1,4 +1,5 @@
-import { notFound } from 'next/navigation'
+﻿import { notFound } from 'next/navigation'
+
 import { Navbar } from '@/components/ui/Navbar'
 import { Ticker } from '@/components/ui/Ticker'
 import { BottomNav } from '@/components/ui/BottomNav'
@@ -8,21 +9,15 @@ import { CHARACTER_MAP } from '@/lib/constants'
 import type { Metadata } from 'next'
 
 interface PageProps {
-  params: Promise<{ id: string }>
+  params: { id: string }
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { id } = await params
-  const character = CHARACTER_MAP.get(id)
+  const character = CHARACTER_MAP.get(params.id)
   if (!character) return { title: 'Character not found — KickoffTo' }
   return {
     title: `${character.name} — KickoffTo`,
     description: character.bio,
-    openGraph: {
-      title: `Chat with ${character.name} on KickoffTo`,
-      description: character.bio,
-      url: `https://kickoffto.com/characters/${character.id}`,
-    },
   }
 }
 
@@ -31,9 +26,8 @@ export function generateStaticParams() {
   return chars.map(c => ({ id: c.id }))
 }
 
-export default async function CharacterPage({ params }: PageProps) {
-  const { id } = await params
-  const character = CHARACTER_MAP.get(id)
+export default function CharacterPage({ params }: PageProps) {
+  const character = CHARACTER_MAP.get(params.id)
   if (!character) notFound()
 
   return (
@@ -44,14 +38,8 @@ export default async function CharacterPage({ params }: PageProps) {
         character.bio,
         `Share: kickoffto.com/characters/${character.id}`,
       ]} />
-
       <main style={{ maxWidth: 1100, margin: '0 auto', padding: '24px 16px 100px' }}>
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr',
-          gap: 20,
-        }}>
-          {/* Info panel */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 20 }}>
           <div style={{
             background: 'var(--bg-card)',
             border: '1px solid var(--border)',
@@ -65,7 +53,6 @@ export default async function CharacterPage({ params }: PageProps) {
             }}>
               ← All characters
             </a>
-
             <div style={{
               width: 64, height: 64, borderRadius: 14,
               background: character.color,
@@ -77,17 +64,16 @@ export default async function CharacterPage({ params }: PageProps) {
             }}>
               {character.monogram}
             </div>
-
             <h1 style={{
               fontFamily: 'var(--font-display)', fontWeight: 800,
-              fontSize: 22, letterSpacing: -0.3, color: 'var(--text)', marginBottom: 4,
+              fontSize: 22, letterSpacing: -0.3,
+              color: 'var(--text)', marginBottom: 4,
             }}>
               {character.name}
             </h1>
             <p style={{ fontSize: 11, color: 'var(--text-3)', marginBottom: 12 }}>
               {character.role} · {character.tier}
             </p>
-
             <div style={{
               display: 'flex', alignItems: 'center', gap: 6,
               marginBottom: 14, fontSize: 12, color: 'var(--green)',
@@ -99,15 +85,10 @@ export default async function CharacterPage({ params }: PageProps) {
               }} />
               Online · Ready
             </div>
-
-            <p style={{
-              fontSize: 13, color: 'var(--text-2)', lineHeight: 1.7, marginBottom: 16,
-            }}>
+            <p style={{ fontSize: 13, color: 'var(--text-2)', lineHeight: 1.7, marginBottom: 16 }}>
               {character.bio}
             </p>
-
             <ShareButton characterId={character.id} />
-
             <div style={{ marginTop: 14 }}>
               <p style={{
                 fontSize: 10, fontWeight: 700, color: 'var(--text-3)',
@@ -129,8 +110,6 @@ export default async function CharacterPage({ params }: PageProps) {
               </div>
             </div>
           </div>
-
-          {/* Chat panel */}
           <ChatPanel character={character} />
         </div>
       </main>
