@@ -1,8 +1,13 @@
 import type { Match } from '@/types'
-import { Flag } from '@/components/ui/Flag'
 
 interface ScoreHeaderProps {
   match: Match
+}
+
+const FLAG_ISO_LIVE: Record<string,string> = {
+  ARG:'ar', FRA:'fr', BRA:'br', ESP:'es', ENG:'gb-eng',
+  GER:'de', POR:'pt', NED:'nl', CAN:'ca', USA:'us',
+  MEX:'mx', MAR:'ma', URU:'uy', ITA:'it',
 }
 
 export function ScoreHeader({ match }: ScoreHeaderProps) {
@@ -58,7 +63,12 @@ export function ScoreHeader({ match }: ScoreHeaderProps) {
           display: 'flex', flexDirection: 'column',
           alignItems: 'center', gap: 4, flex: 1,
         }}>
-          <Flag code={match.homeTeam.code ?? 'ARG'} size={40} />
+          <img
+            src={`https://flagcdn.com/w80/${FLAG_ISO_LIVE[match.homeTeam.code ?? ''] ?? 'un'}.png`}
+            alt={match.homeTeam.name}
+            width={48} height={34}
+            style={{ objectFit:'cover', borderRadius:5, boxShadow:'0 2px 8px rgba(0,0,0,0.4)' }}
+          />
           <span style={{
             fontSize: 11, fontWeight: 600, color: 'var(--text-2)',
             textAlign: 'center',
@@ -92,7 +102,12 @@ export function ScoreHeader({ match }: ScoreHeaderProps) {
           display: 'flex', flexDirection: 'column',
           alignItems: 'center', gap: 4, flex: 1,
         }}>
-          <Flag code={match.awayTeam.code ?? 'FRA'} size={40} />
+          <img
+            src={`https://flagcdn.com/w80/${FLAG_ISO_LIVE[match.awayTeam.code ?? ''] ?? 'un'}.png`}
+            alt={match.awayTeam.name}
+            width={48} height={34}
+            style={{ objectFit:'cover', borderRadius:5, boxShadow:'0 2px 8px rgba(0,0,0,0.4)' }}
+          />
           <span style={{
             fontSize: 11, fontWeight: 600, color: 'var(--text-2)',
             textAlign: 'center',

@@ -202,7 +202,7 @@ export function ChatPanel({
         {/* Input — sticky at bottom */}
         <div style={{
           padding: '10px 14px',
-          paddingBottom: 'max(12px, calc(env(safe-area-inset-bottom) + 12px))',
+          paddingBottom: 'max(12px, env(safe-area-inset-bottom, 12px))',
           borderTop: '1px solid var(--border)',
           background: 'var(--bg)',
           display: 'flex', gap: 8, alignItems: 'flex-end',
@@ -241,16 +241,13 @@ export function ChatPanel({
             aria-label="Send message"
             style={{
               width: 48, height: 48, borderRadius: '50%', flexShrink: 0,
-              background: input.trim() && !isLoading
-                ? character.color
-                : 'var(--bg-elevated)',
+              background: input.trim() && !isLoading ? character.color : 'var(--bg-elevated)',
               border: `1px solid ${input.trim() ? 'transparent' : 'var(--border)'}`,
               color: input.trim() && !isLoading ? '#fff' : 'var(--text-3)',
               cursor: isLoading || !input.trim() ? 'not-allowed' : 'pointer',
               fontSize: 20,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              boxShadow: input.trim() && !isLoading
-                ? `0 2px 16px ${character.color}55` : 'none',
+              boxShadow: input.trim() && !isLoading ? `0 2px 16px ${character.color}55` : 'none',
               transition: 'all 0.2s',
             }}
           >

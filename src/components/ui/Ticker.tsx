@@ -1,29 +1,45 @@
+// src/components/ui/Ticker.tsx
 'use client'
+import { useEffect, useRef } from 'react'
 
-interface TickerProps {
-  segments: string[]
-}
+export function Ticker({ segments }: { segments: string[] }) {
+  const innerRef = useRef<HTMLDivElement>(null)
+  const posRef   = useRef(0)
+  const rafRef   = useRef(0)
 
-export function Ticker({ segments }: TickerProps) {
+  useEffect(() => {
+    const el = innerRef.current
+    if (!el) return
+    const id = setTimeout(() => {
+      const half = el.scrollWidth / 2
+      function tick() {
+        posRef.current -= 0.55
+        if (el && Math.abs(posRef.current) >= half) posRef.current = 0
+        if (el) el.style.transform = `translateX(${posRef.current}px)`
+        rafRef.current = requestAnimationFrame(tick)
+      }
+      rafRef.current = requestAnimationFrame(tick)
+    }, 120)
+    return () => { clearTimeout(id); cancelAnimationFrame(rafRef.current) }
+  }, [segments])
+
   const doubled = [...segments, ...segments]
 
   return (
     <div style={{
-      height: 32, overflow: 'hidden', display: 'flex', alignItems: 'center',
-      background: 'var(--bg-elevated)', borderBottom: '1px solid var(--border)',
-    }}
-    onMouseEnter={e => {
-      const inner = e.currentTarget.querySelector('.ticker-inner') as HTMLElement
-      if (inner) inner.style.animationPlayState = 'paused'
-    }}
-    onMouseLeave={e => {
-      const inner = e.currentTarget.querySelector('.ticker-inner') as HTMLElement
-      if (inner) inner.style.animationPlayState = 'running'
+      overflow:'hidden', background:'var(--bg-elevated)',
+      borderBottom:'1px solid var(--border)',
+      height:30, display:'flex', alignItems:'center',
     }}>
-      <div className="ticker-inner animate-ticker" style={{ display: 'flex', whiteSpace: 'nowrap' }}>
+      <div ref={innerRef} style={{
+        display:'inline-flex', alignItems:'center',
+        willChange:'transform', whiteSpace:'nowrap',
+      }}>
         {doubled.map((seg, i) => (
           <span key={i} style={{
-            padding: '0 24px', fontSize: 11, color: 'var(--text-3)',
+            display:'inline-block', fontSize:11,
+            color:'var(--text-3)', padding:'0 28px',
+            borderRight:'1px solid var(--border)',
           }}>
             {seg}
           </span>

@@ -2,8 +2,19 @@ import { Navbar } from '@/components/ui/Navbar'
 import { BottomNav } from '@/components/ui/BottomNav'
 import Link from 'next/link'
 import type { Metadata } from 'next'
-import { FlagDisplay } from '@/components/ui/FlagDisplay'
 import groupsData from '@/data/wc2026-groups.json'
+
+const FLAG_CODES_GRP: Record<string,string> = {
+  USA:'us',PAN:'pa',ALB:'al',UKR:'ua',ARG:'ar',CHI:'cl',MAR:'ma',IRQ:'iq',
+  MEX:'mx',ECU:'ec',SVK:'sk',NZL:'nz',POR:'pt',CRO:'hr',TAN:'tz',KOR:'kr',
+  FRA:'fr',BEL:'be',NGA:'ng',ELK:'sv',GER:'de',JPN:'jp',PER:'pe',ANG:'ao',
+  ESP:'es',BRA:'br',SRB:'rs',TUN:'tn',ENG:'gb-eng',CAN:'ca',AUS:'au',SUI:'ch',
+  NED:'nl',SEN:'sn',AUT:'at',BIH:'ba',URU:'uy',RSA:'za',GRE:'gr',IRN:'ir',
+  COL:'co',DEN:'dk',CMR:'cm',SVN:'si',ITA:'it',SAU:'sa',MZB:'mz',VEN:'ve',
+}
+function gfc(code: string): string {
+  return FLAG_CODES_GRP[code.toUpperCase()] ?? 'un'
+}
 
 export const metadata: Metadata = {
   title: 'WC2026 Groups — KickoffTo',
@@ -65,7 +76,9 @@ export default function GroupsPage() {
                 {/* Mini flags row */}
                 <div style={{ display: 'flex', gap: 3 }}>
                   {group.teams.map(t => (
-                    <FlagDisplay key={t.code} countryCode={t.code} emoji={t.flag} size={18} />
+                    <img key={t.code} src={`https://flagcdn.com/w40/${gfc(t.code)}.png`}
+                      alt={t.name} width={22} height={15}
+                      style={{ objectFit:'cover', borderRadius:2 }} />
                   ))}
                 </div>
               </div>
@@ -124,7 +137,9 @@ export default function GroupsPage() {
                       }} />
 
                       {/* Flag */}
-                      <FlagDisplay countryCode={team.code} emoji={team.flag} size={22} style={{ flexShrink: 0 }} />
+                      <img src={`https://flagcdn.com/w40/${gfc(team.code)}.png`}
+                        alt={team.name} width={26} height={18}
+                        style={{ objectFit:'cover', borderRadius:3, flexShrink:0, verticalAlign:'middle' }} />
 
                       {/* Full name — no truncation */}
                       <span style={{

@@ -5,12 +5,11 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 
 
-/*
-export const metadata: Metadata = {
-  title: 'Trading Cards — KickoffTo WC2026',
-  description: 'WC2026 player trading cards. Download as PNG.',
+const CARD_FLAGS: Record<string,string> = {
+  messi:'ar', mbappe:'fr', davies:'ca', bellingham:'gb-eng',
+  vinicius:'br', yamal:'es', wirtz:'de', pulisic:'us',
+  hakimi:'ma', haaland:'no', kane:'gb-eng', salah:'eg',
 }
-*/
 
 const FEATURED_PLAYERS = [
   { id: 'messi', name: 'L. Messi', flag: '🇦🇷', position: 'ATT',
@@ -92,7 +91,12 @@ export default function CardsIndexPage() {
                     background: player.kitColor, marginBottom: 10,
                   }} />
 
-                  <div style={{ fontSize: 28, marginBottom: 6 }}>{player.flag}</div>
+                  <img
+                    src={`https://flagcdn.com/w40/${CARD_FLAGS[player.id] ?? 'un'}.png`}
+                    alt={player.id}
+                    width={26} height={18}
+                    style={{ objectFit:'cover', borderRadius:3, verticalAlign:'middle', flexShrink:0, marginBottom: 6 }}
+                  />
 
                   <div style={{
                     fontFamily: 'var(--font-display)', fontSize: 13,
