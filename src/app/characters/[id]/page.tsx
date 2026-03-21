@@ -14,6 +14,7 @@ export default function CharacterPage() {
   const id = params?.id as string
   const character = CHARACTER_MAP.get(id)
   const [infoExpanded, setInfoExpanded] = useState(false)
+  const [pendingPrompt, setPendingPrompt] = useState('')
 
   // Lock body scroll — only chat panel scrolls
   useEffect(() => {
@@ -149,17 +150,21 @@ export default function CharacterPage() {
           scrollbarWidth: 'none',
         }}>
           {character.suggested.slice(0, 5).map(prompt => (
-            <div key={prompt} style={{
-              background: 'rgba(0,0,0,0.28)',
-              backdropFilter: 'blur(8px)',
-              border: '1px solid rgba(255,255,255,0.12)',
-              borderRadius: 99, padding: '5px 12px',
-              fontSize: 11, color: 'rgba(255,255,255,0.8)',
-              whiteSpace: 'nowrap', cursor: 'pointer', flexShrink: 0,
-              fontWeight: 500,
-            }}>
+            <button
+              key={prompt}
+              onClick={() => setPendingPrompt(prompt)}
+              style={{
+                background: 'rgba(0,0,0,0.28)',
+                backdropFilter: 'blur(8px)',
+                border: '1px solid rgba(255,255,255,0.12)',
+                borderRadius: 99, padding: '5px 12px',
+                fontSize: 11, color: 'rgba(255,255,255,0.8)',
+                whiteSpace: 'nowrap', cursor: 'pointer', flexShrink: 0,
+                fontWeight: 500,
+                fontFamily: 'var(--font-body)',
+              }}>
               {prompt}
-            </div>
+            </button>
           ))}
         </div>
 
@@ -214,7 +219,13 @@ export default function CharacterPage() {
         minHeight: 0,
         marginBottom: 56, // BottomNav height
       }}>
-        <ChatPanel character={character} compact prefilledQuestion={prefilledQuestion} />
+        <ChatPanel
+          character={character}
+          compact
+          prefilledQuestion={prefilledQuestion}
+          pendingPrompt={pendingPrompt}
+          onPromptConsumed={() => setPendingPrompt('')}
+        />
       </div>
 
       <BottomNav />

@@ -3,7 +3,7 @@ import { Ticker } from '@/components/ui/Ticker'
 import { BottomNav } from '@/components/ui/BottomNav'
 import { Countdown } from '@/components/ui/Countdown'
 import { CharacterCard } from '@/components/ui/CharacterCard'
-import { FlagDisplay } from '@/components/ui/FlagDisplay'
+import { Flag } from '@/components/ui/Flag'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { CHARACTERS } from '@/lib/constants'
@@ -160,7 +160,7 @@ export default function HomePage() {
                     {/* Teams */}
                     <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10 }}>
                       <div style={{ flex: 1, textAlign: 'center' }}>
-                        <FlagDisplay countryCode={match.homeTeam.code ?? 'ARG'} emoji={match.homeTeam.flag} size={32} />
+                        <Flag code={match.homeTeam.code ?? 'ARG'} emoji={match.homeTeam.flag} size={36} />
                         <div style={{ fontSize: 10, fontWeight: 600, color: 'var(--text)', marginTop: 3 }}>
                           {match.homeTeam.shortName}
                         </div>
@@ -172,7 +172,7 @@ export default function HomePage() {
                         vs
                       </div>
                       <div style={{ flex: 1, textAlign: 'center' }}>
-                        <FlagDisplay countryCode={match.awayTeam.code ?? 'ARG'} emoji={match.awayTeam.flag} size={32} />
+                        <Flag code={match.awayTeam.code ?? 'ARG'} emoji={match.awayTeam.flag} size={36} />
                         <div style={{ fontSize: 10, fontWeight: 600, color: 'var(--text)', marginTop: 3 }}>
                           {match.awayTeam.shortName}
                         </div>

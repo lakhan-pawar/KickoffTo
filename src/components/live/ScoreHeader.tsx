@@ -1,5 +1,5 @@
-'use client'
 import type { Match } from '@/types'
+import { Flag } from '@/components/ui/Flag'
 
 interface ScoreHeaderProps {
   match: Match
@@ -58,7 +58,7 @@ export function ScoreHeader({ match }: ScoreHeaderProps) {
           display: 'flex', flexDirection: 'column',
           alignItems: 'center', gap: 4, flex: 1,
         }}>
-          <span style={{ fontSize: 36 }}>{match.homeTeam.flag}</span>
+          <Flag code={match.homeTeam.code ?? 'ARG'} size={40} />
           <span style={{
             fontSize: 11, fontWeight: 600, color: 'var(--text-2)',
             textAlign: 'center',
@@ -92,7 +92,7 @@ export function ScoreHeader({ match }: ScoreHeaderProps) {
           display: 'flex', flexDirection: 'column',
           alignItems: 'center', gap: 4, flex: 1,
         }}>
-          <span style={{ fontSize: 36 }}>{match.awayTeam.flag}</span>
+          <Flag code={match.awayTeam.code ?? 'FRA'} size={40} />
           <span style={{
             fontSize: 11, fontWeight: 600, color: 'var(--text-2)',
             textAlign: 'center',

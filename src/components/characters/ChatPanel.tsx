@@ -11,9 +11,17 @@ interface ChatPanelProps {
   character: Character
   compact?: boolean
   prefilledQuestion?: string
+  pendingPrompt?: string
+  onPromptConsumed?: () => void
 }
 
-export function ChatPanel({ character, compact, prefilledQuestion }: ChatPanelProps) {
+export function ChatPanel({
+  character,
+  compact,
+  prefilledQuestion,
+  pendingPrompt,
+  onPromptConsumed
+}: ChatPanelProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const [apiStatus, setApiStatus] = useState<'unknown' | 'ok' | 'error'>('unknown')
   const [apiError, setApiError] = useState('')
@@ -60,6 +68,18 @@ export function ChatPanel({ character, compact, prefilledQuestion }: ChatPanelPr
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
+
+  // Handle suggested prompt clicks from parent
+  useEffect(() => {
+    if (pendingPrompt && pendingPrompt.trim()) {
+      setInput(pendingPrompt)
+      // Small delay to ensure setInput has propagated, then submit
+      setTimeout(() => {
+        handleSubmit(null as any)
+        onPromptConsumed?.()
+      }, 50)
+    }
+  }, [pendingPrompt, setInput, handleSubmit, onPromptConsumed])
 
   // Check API health on mount
   useEffect(() => {

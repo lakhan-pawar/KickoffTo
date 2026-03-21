@@ -97,17 +97,22 @@ export function LiveMatchRoom({ match }: LiveMatchRoomProps) {
 
   return (
     <div>
-      {/* Score header — sticky */}
-      <div style={{ position: 'sticky', top: 64, zIndex: 90 }}>
+      {/* Score header + Momentum — sticky */}
+      <div style={{
+        position: 'sticky',
+        top: 52, // below navbar height
+        zIndex: 90,
+        background: 'var(--bg)',
+        borderBottom: '1px solid var(--border)',
+        paddingBottom: 12,
+      }}>
         <ScoreHeader match={liveMatch} />
+        <MomentumBar
+          homeTeam={liveMatch.homeTeam}
+          awayTeam={liveMatch.awayTeam}
+          momentum={momentum}
+        />
       </div>
-
-      {/* Momentum bar */}
-      <MomentumBar
-        homeTeam={liveMatch.homeTeam}
-        awayTeam={liveMatch.awayTeam}
-        momentum={momentum}
-      />
 
       {/* Tab bar */}
       <LiveTabs activeTab={activeTab} onTabChange={setActiveTab} />

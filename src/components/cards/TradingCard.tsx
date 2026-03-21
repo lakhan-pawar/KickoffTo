@@ -145,20 +145,42 @@ export function TradingCard({ player }: { player: Player }) {
 
   async function download() {
     setDownloading(true)
+
+    // Force front face visible, capture it, then restore
+    const frontEl = cardRef.current?.querySelector('.card-front') as HTMLElement
+    if (!frontEl) { setDownloading(false); return }
+
     try {
-      // Dynamically import html2canvas only at download time
       const { default: html2canvas } = await import(
-        /* webpackIgnore: true */ 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.esm.min.js'
+        /* webpackIgnore: true */
+        'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.esm.min.js'
       )
-      const el = cardRef.current
-      if (!el) return
-      const canvas = await html2canvas(el, { scale: 3, useCORS: true, allowTaint: false })
+
+      // Temporarily flatten the card so html2canvas sees it correctly
+      const wrapper = cardRef.current as HTMLElement
+      const origTransform = wrapper.style.transform
+      const origTransformStyle = wrapper.style.transformStyle
+      wrapper.style.transform = 'none'
+      wrapper.style.transformStyle = 'flat'
+
+      const canvas = await html2canvas(frontEl, {
+        scale: 3,
+        useCORS: true,
+        allowTaint: false,
+        backgroundColor: null,
+      })
+
+      // Restore
+      wrapper.style.transform = origTransform
+      wrapper.style.transformStyle = origTransformStyle
+
       const link = document.createElement('a')
       link.download = `kickoffto-${player.id}-wc2026.png`
       link.href = canvas.toDataURL('image/png')
       link.click()
     } catch {
-      alert('Download failed — try right-clicking the card and saving the image.')
+      // Fallback: open card image in new tab
+      alert('Right-click the card and save as image, or screenshot.')
     } finally {
       setDownloading(false)
     }
@@ -397,7 +419,7 @@ export function TradingCard({ player }: { player: Player }) {
           }}
         >
           {/* Front */}
-          <div style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden', position: 'relative' }}>
+          <div className="card-front" style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden', position: 'relative' }}>
             {CardFront}
             <div style={{
               position: 'absolute', bottom: 12, right: 12,
