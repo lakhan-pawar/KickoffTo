@@ -122,13 +122,6 @@ export default function CardsIndexPage() {
           })}
         </div>
         
-        <style jsx>{`
-          .card-hover-el:hover {
-            border-color: var(--green) !important;
-            transform: translateY(-2px);
-          }
-        `}</style>
-
         <p style={{
           fontSize: 12, color: 'var(--text-3)', textAlign: 'center', marginTop: 20,
         }}>

@@ -1,0 +1,112 @@
+{
+  "groups": [
+    {
+      "letter": "A",
+      "teams": [
+        { "code": "USA", "name": "United States", "flag": "🇺🇸", "confederation": "CONCACAF", "kitColors": ["#b22234", "#ffffff"] },
+        { "code": "PAN", "name": "Panama", "flag": "🇵🇦", "confederation": "CONCACAF", "kitColors": ["#da121a", "#ffffff"] },
+        { "code": "ALB", "name": "Albania", "flag": "🇦🇱", "confederation": "UEFA", "kitColors": ["#e41e20", "#000000"] },
+        { "code": "UKR", "name": "Ukraine", "flag": "🇺🇦", "confederation": "UEFA", "kitColors": ["#005bbb", "#ffd500"] }
+      ]
+    },
+    {
+      "letter": "B",
+      "teams": [
+        { "code": "ARG", "name": "Argentina", "flag": "🇦🇷", "confederation": "CONMEBOL", "kitColors": ["#75aadb", "#ffffff"] },
+        { "code": "CHI", "name": "Chile", "flag": "🇨🇱", "confederation": "CONMEBOL", "kitColors": ["#d52b1e", "#ffffff"] },
+        { "code": "MAR", "name": "Morocco", "flag": "🇲🇦", "confederation": "CAF", "kitColors": ["#c1272d", "#006233"] },
+        { "code": "IRQ", "name": "Iraq", "flag": "🇮🇶", "confederation": "AFC", "kitColors": ["#ce1126", "#007a3d"] }
+      ]
+    },
+    {
+      "letter": "C",
+      "teams": [
+        { "code": "MEX", "name": "Mexico", "flag": "🇲🇽", "confederation": "CONCACAF", "kitColors": ["#006847", "#ffffff"] },
+        { "code": "ECU", "name": "Ecuador", "flag": "🇪🇨", "confederation": "CONMEBOL", "kitColors": ["#ffd100", "#003087"] },
+        { "code": "SVK", "name": "Slovakia", "flag": "🇸🇰", "confederation": "UEFA", "kitColors": ["#ffffff", "#003399"] },
+        { "code": "NZL", "name": "New Zealand", "flag": "🇳🇿", "confederation": "OFC", "kitColors": ["#ffffff", "#000000"] }
+      ]
+    },
+    {
+      "letter": "D",
+      "teams": [
+        { "code": "POR", "name": "Portugal", "flag": "🇵🇹", "confederation": "UEFA", "kitColors": ["#006600", "#ff0000"] },
+        { "code": "CRO", "name": "Croatia", "flag": "🇭🇷", "confederation": "UEFA", "kitColors": ["#cc1f28", "#ffffff"] },
+        { "code": "TAN", "name": "Tanzania", "flag": "🇹🇿", "confederation": "CAF", "kitColors": ["#1eb53a", "#000000"] },
+        { "code": "KOR", "name": "South Korea", "flag": "🇰🇷", "confederation": "AFC", "kitColors": ["#ce1126", "#003478"] }
+      ]
+    },
+    {
+      "letter": "E",
+      "teams": [
+        { "code": "FRA", "name": "France", "flag": "🇫🇷", "confederation": "UEFA", "kitColors": ["#003087", "#ffffff"] },
+        { "code": "BEL", "name": "Belgium", "flag": "🇧🇪", "confederation": "UEFA", "kitColors": ["#000000", "#e30613"] },
+        { "code": "NGA", "name": "Nigeria", "flag": "🇳🇬", "confederation": "CAF", "kitColors": ["#008751", "#ffffff"] },
+        { "code": "ELK", "name": "El Salvador", "flag": "🇸🇻", "confederation": "CONCACAF", "kitColors": ["#0f47af", "#ffffff"] }
+      ]
+    },
+    {
+      "letter": "F",
+      "teams": [
+        { "code": "GER", "name": "Germany", "flag": "🇩🇪", "confederation": "UEFA", "kitColors": ["#ffffff", "#000000"] },
+        { "code": "JPN", "name": "Japan", "flag": "🇯🇵", "confederation": "AFC", "kitColors": ["#000080", "#ffffff"] },
+        { "code": "PER", "name": "Peru", "flag": "🇵🇪", "confederation": "CONMEBOL", "kitColors": ["#d91023", "#ffffff"] },
+        { "code": "ANG", "name": "Angola", "flag": "🇦🇴", "confederation": "CAF", "kitColors": ["#cc0000", "#000000"] }
+      ]
+    },
+    {
+      "letter": "G",
+      "teams": [
+        { "code": "ESP", "name": "Spain", "flag": "🇪🇸", "confederation": "UEFA", "kitColors": ["#d4213d", "#ffc400"] },
+        { "code": "BRA", "name": "Brazil", "flag": "🇧🇷", "confederation": "CONMEBOL", "kitColors": ["#f7e03b", "#009c3b"] },
+        { "code": "SRB", "name": "Serbia", "flag": "🇷🇸", "confederation": "UEFA", "kitColors": ["#c6363c", "#0c4076"] },
+        { "code": "TUN", "name": "Tunisia", "flag": "🇹🇳", "confederation": "CAF", "kitColors": ["#e70013", "#ffffff"] }
+      ]
+    },
+    {
+      "letter": "H",
+      "teams": [
+        { "code": "ENG", "name": "England", "flag": "🏴", "confederation": "UEFA", "kitColors": ["#cf081f", "#ffffff"] },
+        { "code": "CAN", "name": "Canada", "flag": "🇨🇦", "confederation": "CONCACAF", "kitColors": ["#e31837", "#ffffff"] },
+        { "code": "AUS", "name": "Australia", "flag": "🇦🇺", "confederation": "AFC", "kitColors": ["#00843d", "#ffd700"] },
+        { "code": "SUI", "name": "Switzerland", "flag": "🇨🇭", "confederation": "UEFA", "kitColors": ["#ff0000", "#ffffff"] }
+      ]
+    },
+    {
+      "letter": "I",
+      "teams": [
+        { "code": "NED", "name": "Netherlands", "flag": "🇳🇱", "confederation": "UEFA", "kitColors": ["#ff6600", "#003087"] },
+        { "code": "SEN", "name": "Senegal", "flag": "🇸🇳", "confederation": "CAF", "kitColors": ["#00853f", "#fcd116"] },
+        { "code": "AUT", "name": "Austria", "flag": "🇦🇹", "confederation": "UEFA", "kitColors": ["#ed2939", "#ffffff"] },
+        { "code": "BIH", "name": "Bosnia & Herz.", "flag": "🇧🇦", "confederation": "UEFA", "kitColors": ["#002395", "#fecb00"] }
+      ]
+    },
+    {
+      "letter": "J",
+      "teams": [
+        { "code": "URU", "name": "Uruguay", "flag": "🇺🇾", "confederation": "CONMEBOL", "kitColors": ["#75aadb", "#ffffff"] },
+        { "code": "RSA", "name": "South Africa", "flag": "🇿🇦", "confederation": "CAF", "kitColors": ["#007a4d", "#001489"] },
+        { "code": "GRE", "name": "Greece", "flag": "🇬🇷", "confederation": "UEFA", "kitColors": ["#0d5eaf", "#ffffff"] },
+        { "code": "IRN", "name": "Iran", "flag": "🇮🇷", "confederation": "AFC", "kitColors": ["#239f40", "#da0000"] }
+      ]
+    },
+    {
+      "letter": "K",
+      "teams": [
+        { "code": "COL", "name": "Colombia", "flag": "🇨🇴", "confederation": "CONMEBOL", "kitColors": ["#fcd116", "#003087"] },
+        { "code": "DEN", "name": "Denmark", "flag": "🇩🇰", "confederation": "UEFA", "kitColors": ["#c60c30", "#ffffff"] },
+        { "code": "CMR", "name": "Cameroon", "flag": "🇨🇲", "confederation": "CAF", "kitColors": ["#007a5e", "#ce1126"] },
+        { "code": "SVN", "name": "Slovenia", "flag": "🇸🇮", "confederation": "UEFA", "kitColors": ["#003da5", "#ffffff"] }
+      ]
+    },
+    {
+      "letter": "L",
+      "teams": [
+        { "code": "ITA", "name": "Italy", "flag": "🇮🇹", "confederation": "UEFA", "kitColors": ["#003087", "#ffffff"] },
+        { "code": "SAU", "name": "Saudi Arabia", "flag": "🇸🇦", "confederation": "AFC", "kitColors": ["#006c35", "#ffffff"] },
+        { "code": "MXC", "name": "Mozambique", "flag": "🇲🇿", "confederation": "CAF", "kitColors": ["#009a44", "#000000"] },
+        { "code": "VEN", "name": "Venezuela", "flag": "🇻🇪", "confederation": "CONMEBOL", "kitColors": ["#cf142b", "#00247d"] }
+      ]
+    }
+  ]
+}

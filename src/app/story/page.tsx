@@ -113,9 +113,7 @@ export default async function StoryPage() {
                     background: 'var(--bg-card)', border: '1px solid var(--border)',
                     borderRadius: 12, padding: 16,
                     transition: 'border-color 0.15s',
-                  }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.borderColor = '#1a3a1a' }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.borderColor = 'var(--border)' }}>
+                  }}>
                     <div style={{
                       fontSize: 9, fontWeight: 700, color: 'var(--text-3)',
                       textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 5,

@@ -232,12 +232,6 @@ export default function HeatwavePage() {
 
       </main>
       <BottomNav />
-      <style jsx global>{`
-        @keyframes slideUp {
-          from { transform: translateY(10px); opacity: 0; }
-          to { transform: translateY(0); opacity: 1; }
-        }
-      `}</style>
     </>
   )
 }

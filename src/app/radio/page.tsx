@@ -260,13 +260,6 @@ export default function RadioPage() {
 
       </main>
       <BottomNav />
-      <style jsx global>{`
-        @keyframes livePulse {
-          0% { transform: scale(1); opacity: 1; }
-          50% { transform: scale(1.5); opacity: 0; }
-          100% { transform: scale(1); opacity: 1; }
-        }
-      `}</style>
     </>
   )
 }
