@@ -57,6 +57,20 @@ export async function GET() {
         process.env.FOOTBALL_DATA_KEY_3
       ),
     },
+
+    unrealSpeech: {
+      configured: !!(
+        process.env.UNREAL_SPEECH_API_KEY_1 ||
+        process.env.UNREAL_SPEECH_API_KEY_2 ||
+        process.env.UNREAL_SPEECH_API_KEY_3
+      ),
+      keys: [
+        { name: 'UNREAL_SPEECH_API_KEY_1', loaded: !!process.env.UNREAL_SPEECH_API_KEY_1 },
+        { name: 'UNREAL_SPEECH_API_KEY_2', loaded: !!process.env.UNREAL_SPEECH_API_KEY_2 },
+        { name: 'UNREAL_SPEECH_API_KEY_3', loaded: !!process.env.UNREAL_SPEECH_API_KEY_3 },
+      ],
+    },
+
     environment: process.env.NODE_ENV,
     timestamp: new Date().toISOString(),
   })
