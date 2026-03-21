@@ -1,6 +1,7 @@
 'use client'
-import Link from 'next/link'
 import type { Match } from '@/types'
+import { useState } from 'react'
+import { WatchLiveSheet } from '@/components/live/WatchLiveSheet'
 
 interface MatchCardProps {
   match: Match
@@ -12,6 +13,8 @@ interface MatchCardProps {
 export function MatchCard({ match, variant = 'default', showButtons = true, onPreviewClick }: MatchCardProps) {
   const isLive = match.status === 'live'
   const isFinished = match.status === 'finished'
+  const [showWatchSheet, setShowWatchSheet] = useState(false)
+  const matchTitle = `${match.homeTeam.flag} ${match.homeTeam.name} vs ${match.awayTeam.flag} ${match.awayTeam.name}`
 
   const scoreSize = match.intensity === 'historic' ? 52
     : match.intensity === 'big' ? 44 : 36
@@ -115,13 +118,16 @@ export function MatchCard({ match, variant = 'default', showButtons = true, onPr
           display: 'flex', gap: 6,
         }}>
           {isLive ? (
-            <Link href={`/live/${match.id}`} style={{
-              flex: 1, background: 'var(--green)', color: '#fff', border: 'none',
-              borderRadius: 7, padding: '6px 10px', fontSize: 10, fontWeight: 700,
-              textAlign: 'center', textDecoration: 'none', cursor: 'pointer',
-            }}>
+            <button
+              onClick={() => setShowWatchSheet(true)}
+              style={{
+                flex: 1, background: 'var(--green)', color: '#fff', border: 'none',
+                borderRadius: 7, padding: '6px 10px', fontSize: 10, fontWeight: 700,
+                cursor: 'pointer',
+              }}
+            >
               Watch live →
-            </Link>
+            </button>
           ) : (
             <button onClick={() => onPreviewClick?.(match.id)} style={{
               flex: 1, background: 'var(--bg-elevated)', color: 'var(--text-3)',
@@ -140,6 +146,11 @@ export function MatchCard({ match, variant = 'default', showButtons = true, onPr
           </button>
         </div>
       )}
+      <WatchLiveSheet
+        isOpen={showWatchSheet}
+        onClose={() => setShowWatchSheet(false)}
+        matchTitle={matchTitle}
+      />
     </div>
   )
 }
