@@ -25,6 +25,9 @@ export const metadata: Metadata = {
     siteName: 'KickoffTo',
   },
   robots: { index: true, follow: true },
+  other: {
+    'google-adsense-account': 'ca-pub-1935380139836452',
+  },
 }
 
 import { MiniPlayer } from '@/components/ui/MiniPlayer'
