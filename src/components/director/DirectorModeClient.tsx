@@ -4,12 +4,12 @@ import { Flag, FLAG_ISO } from '@/components/ui/Flag'
 
 // Fixed emoji — no encoding issues
 const GENRES = [
-  { id: 'horror',  emoji: '🎃', name: 'Horror',      desc: 'A nightmare in 90 minutes',      voice: 'Dan',      color: '#dc2626' },
-  { id: 'romance', emoji: '💕', name: 'Romance',     desc: 'Love in the beautiful game',     voice: 'Liv',      color: '#f43f5e' },
-  { id: 'heist',   emoji: '💰', name: 'Heist',       desc: 'The perfect footballing robbery', voice: 'Will',     color: '#d97706' },
-  { id: 'scifi',   emoji: '🚀', name: 'Sci-Fi',      desc: 'Football in the far future',     voice: 'Scarlett', color: '#2563eb' },
-  { id: 'western', emoji: '🤠', name: 'Western',     desc: 'A duel at high noon',            voice: 'Dan',      color: '#b45309' },
-  { id: 'comedy',  emoji: '😂', name: 'Comedy',      desc: 'When football gets absurd',      voice: 'Freya',    color: '#16a34a' },
+  { id: 'horror',  emoji: '🎃', name: 'Horror',      desc: 'A nightmare in 90 minutes',      voice: 'Jasper',   color: '#dc2626' },
+  { id: 'romance', emoji: '💕', name: 'Romance',     desc: 'Love in the beautiful game',     voice: 'Aria',     color: '#f43f5e' },
+  { id: 'heist',   emoji: '💰', name: 'Heist',       desc: 'The perfect footballing robbery', voice: 'Ryan',     color: '#d97706' },
+  { id: 'scifi',   emoji: '🚀', name: 'Sci-Fi',      desc: 'Football in the far future',     voice: 'Sierra',   color: '#2563eb' },
+  { id: 'western', emoji: '🤠', name: 'Western',     desc: 'A duel at high noon',            voice: 'Liam',     color: '#b45309' },
+  { id: 'comedy',  emoji: '😂', name: 'Comedy',      desc: 'When football gets absurd',      voice: 'Nova',     color: '#16a34a' },
 ]
 
 interface MatchEvent {

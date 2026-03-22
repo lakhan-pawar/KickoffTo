@@ -5,7 +5,7 @@ const KEYS = [
   process.env.UNREAL_SPEECH_API_KEY_1,
   process.env.UNREAL_SPEECH_API_KEY_2,
   process.env.UNREAL_SPEECH_API_KEY_3,
-].filter(Boolean) as string[]
+].filter(Boolean).map(k => k!.trim()) as string[]
 
 let keyIndex = 0
 
