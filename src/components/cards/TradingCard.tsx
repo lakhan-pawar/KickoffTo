@@ -14,6 +14,7 @@ interface Player {
   stats: { goals: number; assists: number; appearances: number; rating: number }
   rarity: 'bronze' | 'silver' | 'gold' | 'rainbow'
   number?: number
+  countryCode?: string
 }
 
 const RARITY_STYLES = {
@@ -349,8 +350,21 @@ export function TradingCard({ player }: { player: Player }) {
         background: `linear-gradient(160deg, ${kit0}88, transparent)`,
         padding: '20px 16px',
       }}>
-        <div style={{ fontSize: 48, textAlign: 'center', marginBottom: 8 }}>
-          {player.flag}
+        <div style={{ textAlign: 'center', marginBottom: 12 }}>
+          {player.countryCode ? (
+            <img 
+              src={`https://flagcdn.com/h80/${player.countryCode.toLowerCase()}.png`}
+              alt={`${player.nationality} flag`}
+              style={{
+                height: 44, width: 'auto', 
+                borderRadius: 4,
+                boxShadow: '0 4px 15px rgba(0,0,0,0.6)',
+                display: 'inline-block'
+              }}
+            />
+          ) : (
+            <div style={{ fontSize: 48 }}>{player.flag}</div>
+          )}
         </div>
         <div style={{
           fontFamily: 'var(--font-display)', fontWeight: 900,

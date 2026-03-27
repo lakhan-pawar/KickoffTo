@@ -21,7 +21,7 @@ function getMockPlayer(playerId: string) {
   const players: Record<string, any> = {
     'messi': {
       id: 'messi', name: 'L. Messi', fullName: 'Lionel Messi',
-      position: 'ATT', nationality: 'Argentina', flag: '🇦🇷',
+      position: 'ATT', nationality: 'Argentina', flag: '🇦🇷', countryCode: 'ar',
       club: 'Inter Miami', photo: null,
       kitColors: ['#75aadb', '#ffffff'],
       stats: { goals: 6, assists: 4, appearances: 7, rating: 9.2 },
@@ -31,7 +31,7 @@ function getMockPlayer(playerId: string) {
     },
     'mbappe': {
       id: 'mbappe', name: 'K. Mbappé', fullName: 'Kylian Mbappé',
-      position: 'ATT', nationality: 'France', flag: '🇫🇷',
+      position: 'ATT', nationality: 'France', flag: '🇫🇷', countryCode: 'fr',
       club: 'Real Madrid', photo: null,
       kitColors: ['#003087', '#ffffff'],
       stats: { goals: 5, assists: 3, appearances: 7, rating: 8.9 },
@@ -41,7 +41,7 @@ function getMockPlayer(playerId: string) {
     },
     'davies': {
       id: 'davies', name: 'A. Davies', fullName: 'Alphonso Davies',
-      position: 'DEF', nationality: 'Canada', flag: '🇨🇦',
+      position: 'DEF', nationality: 'Canada', flag: '🇨🇦', countryCode: 'ca',
       club: 'Bayern Munich', photo: null,
       kitColors: ['#e31837', '#ffffff'],
       stats: { goals: 1, assists: 3, appearances: 6, rating: 8.1 },
@@ -51,7 +51,7 @@ function getMockPlayer(playerId: string) {
     },
     'bellingham': {
       id: 'bellingham', name: 'J. Bellingham', fullName: 'Jude Bellingham',
-      position: 'MID', nationality: 'England', flag: '🏴',
+      position: 'MID', nationality: 'England', flag: '🏴', countryCode: 'gb-eng',
       club: 'Real Madrid', photo: null,
       kitColors: ['#cf081f', '#ffffff'],
       stats: { goals: 0, assists: 0, appearances: 0, rating: 0 },
@@ -59,7 +59,7 @@ function getMockPlayer(playerId: string) {
     },
     'vinicius': {
       id: 'vinicius', name: 'Vinicius Jr.', fullName: 'Vinicius Junior',
-      position: 'ATT', nationality: 'Brazil', flag: '🇧🇷',
+      position: 'ATT', nationality: 'Brazil', flag: '🇧🇷', countryCode: 'br',
       club: 'Real Madrid', photo: null,
       kitColors: ['#f7e03b', '#009c3b'],
       stats: { goals: 0, assists: 0, appearances: 0, rating: 0 },
@@ -67,7 +67,7 @@ function getMockPlayer(playerId: string) {
     },
     'haaland': {
       id: 'haaland', name: 'E. Haaland', fullName: 'Erling Haaland',
-      position: 'ATT', nationality: 'Norway', flag: '🇳🇴',
+      position: 'ATT', nationality: 'Norway', flag: '🇳🇴', countryCode: 'no',
       club: 'Man City', photo: null,
       kitColors: ['#97c1e7', '#ffffff'],
       stats: { goals: 0, assists: 0, appearances: 0, rating: 0 },
@@ -75,7 +75,7 @@ function getMockPlayer(playerId: string) {
     },
     'kane': {
       id: 'kane', name: 'H. Kane', fullName: 'Harry Kane',
-      position: 'ATT', nationality: 'England', flag: '🏴',
+      position: 'ATT', nationality: 'England', flag: '🏴', countryCode: 'gb-eng',
       club: 'Bayern Munich', photo: null,
       kitColors: ['#cf081f', '#ffffff'],
       stats: { goals: 0, assists: 0, appearances: 0, rating: 0 },
@@ -83,7 +83,7 @@ function getMockPlayer(playerId: string) {
     },
     'salah': {
       id: 'salah', name: 'M. Salah', fullName: 'Mohamed Salah',
-      position: 'ATT', nationality: 'Egypt', flag: '🇪🇬',
+      position: 'ATT', nationality: 'Egypt', flag: '🇪🇬', countryCode: 'eg',
       club: 'Liverpool', photo: null,
       kitColors: ['#c8102e', '#ffffff'],
       stats: { goals: 0, assists: 0, appearances: 0, rating: 0 },
@@ -91,7 +91,7 @@ function getMockPlayer(playerId: string) {
     },
     'pulisic': {
       id: 'pulisic', name: 'C. Pulisic', fullName: 'Christian Pulisic',
-      position: 'ATT', nationality: 'American', flag: '🇺🇸',
+      position: 'ATT', nationality: 'American', flag: '🇺🇸', countryCode: 'us',
       club: 'AC Milan', photo: null,
       kitColors: ['#b22234', '#ffffff'],
       stats: { goals: 8, assists: 9, appearances: 78, rating: 7.8 },
@@ -99,7 +99,7 @@ function getMockPlayer(playerId: string) {
     },
     'adams': {
       id: 'adams', name: 'T. Adams', fullName: 'Tyler Adams',
-      position: 'CDM', nationality: 'American', flag: '🇺🇸',
+      position: 'CDM', nationality: 'American', flag: '🇺🇸', countryCode: 'us',
       club: 'AFC Bournemouth', photo: null,
       kitColors: ['#b22234', '#ffffff'],
       stats: { goals: 2, assists: 8, appearances: 52, rating: 7.4 },
@@ -107,7 +107,7 @@ function getMockPlayer(playerId: string) {
     },
     'mckennie': {
       id: 'mckennie', name: 'W. McKennie', fullName: 'Weston McKennie',
-      position: 'MID', nationality: 'American', flag: '🇺🇸',
+      position: 'MID', nationality: 'American', flag: '🇺🇸', countryCode: 'us',
       club: 'Juventus', photo: null,
       kitColors: ['#b22234', '#ffffff'],
       stats: { goals: 6, assists: 7, appearances: 62, rating: 7.3 },
@@ -115,7 +115,7 @@ function getMockPlayer(playerId: string) {
     },
     'balogun': {
       id: 'balogun', name: 'F. Balogun', fullName: 'Folarin Balogun',
-      position: 'ST', nationality: 'American', flag: '🇺🇸',
+      position: 'ST', nationality: 'American', flag: '🇺🇸', countryCode: 'us',
       club: 'Monaco', photo: null,
       kitColors: ['#b22234', '#ffffff'],
       stats: { goals: 14, assists: 5, appearances: 18, rating: 7.5 },
@@ -123,7 +123,7 @@ function getMockPlayer(playerId: string) {
     },
     'turner': {
       id: 'turner', name: 'M. Turner', fullName: 'Matt Turner',
-      position: 'GK', nationality: 'American', flag: '🇺🇸',
+      position: 'GK', nationality: 'American', flag: '🇺🇸', countryCode: 'us',
       club: 'Crystal Palace', photo: null,
       kitColors: ['#b22234', '#ffffff'],
       stats: { goals: 0, assists: 0, appearances: 38, rating: 7.1 },
@@ -131,7 +131,7 @@ function getMockPlayer(playerId: string) {
     },
     'wirtz': {
       id: 'wirtz', name: 'F. Wirtz', fullName: 'Florian Wirtz',
-      position: 'CAM', nationality: 'German', flag: '🇩🇪',
+      position: 'CAM', nationality: 'German', flag: '🇩🇪', countryCode: 'de',
       club: 'Bayer Leverkusen', photo: null,
       kitColors: ['#ffffff', '#000000'],
       stats: { goals: 18, assists: 20, appearances: 32, rating: 8.6 },
@@ -139,7 +139,7 @@ function getMockPlayer(playerId: string) {
     },
     'hakimi': {
       id: 'hakimi', name: 'A. Hakimi', fullName: 'Achraf Hakimi',
-      position: 'DEF', nationality: 'Moroccan', flag: '🇲🇦',
+      position: 'DEF', nationality: 'Moroccan', flag: '🇲🇦', countryCode: 'ma',
       club: 'PSG', photo: null,
       kitColors: ['#c1272d', '#006233'],
       stats: { goals: 4, assists: 12, appearances: 68, rating: 7.9 },
@@ -147,7 +147,7 @@ function getMockPlayer(playerId: string) {
     },
     'ronaldo': {
       id: 'ronaldo', name: 'C. Ronaldo', fullName: 'Cristiano Ronaldo',
-      position: 'ATT', nationality: 'Portugal', flag: '🇵🇹',
+      position: 'ATT', nationality: 'Portugal', flag: '🇵🇹', countryCode: 'pt',
       club: 'Al-Nassr', photo: null,
       kitColors: ['#ffdd00', '#2546ad'],
       stats: { goals: 8, assists: 2, appearances: 8, rating: 8.4 },
@@ -157,7 +157,7 @@ function getMockPlayer(playerId: string) {
     },
     'neymar': {
       id: 'neymar', name: 'Neymar Jr', fullName: 'Neymar Jr',
-      position: 'ATT', nationality: 'Brazil', flag: '🇧🇷',
+      position: 'ATT', nationality: 'Brazil', flag: '🇧🇷', countryCode: 'br',
       club: 'Al-Hilal', photo: null,
       kitColors: ['#2546ad', '#ffffff'],
       stats: { goals: 4, assists: 6, appearances: 6, rating: 8.2 },
@@ -166,7 +166,7 @@ function getMockPlayer(playerId: string) {
     },
     'son': {
       id: 'son', name: 'Son H.M.', fullName: 'Son Heung-min',
-      position: 'ATT', nationality: 'South Korea', flag: '🇰🇷',
+      position: 'ATT', nationality: 'South Korea', flag: '🇰🇷', countryCode: 'kr',
       club: 'Tottenham', photo: null,
       kitColors: ['#ffffff', '#132257'],
       stats: { goals: 3, assists: 2, appearances: 5, rating: 7.9 },
@@ -175,7 +175,7 @@ function getMockPlayer(playerId: string) {
     },
     'osimhen': {
       id: 'osimhen', name: 'V. Osimhen', fullName: 'Victor Osimhen',
-      position: 'ATT', nationality: 'Nigeria', flag: '🇳🇬',
+      position: 'ATT', nationality: 'Nigeria', flag: '🇳🇬', countryCode: 'ng',
       club: 'Galatasaray', photo: null,
       kitColors: ['#c1272d', '#006233'],
       stats: { goals: 5, assists: 1, appearances: 4, rating: 8.0 },
