@@ -1,0 +1,18 @@
+[
+  { "id": 1, "name": "USA", "code": "us", "confed": "concacaf", "rank": 11 },
+  { "id": 2, "name": "Mexico", "code": "mx", "confed": "concacaf", "rank": 15 },
+  { "id": 3, "name": "Canada", "code": "ca", "confed": "concacaf", "rank": 50 },
+  { "id": 4, "name": "Argentina", "code": "ar", "confed": "conmebol", "rank": 1 },
+  { "id": 5, "name": "Brazil", "code": "br", "confed": "conmebol", "rank": 5 },
+  { "id": 6, "name": "France", "code": "fr", "confed": "uefa", "rank": 2 },
+  { "id": 7, "name": "England", "code": "gb-eng", "confed": "uefa", "rank": 4 },
+  { "id": 8, "name": "Germany", "code": "de", "confed": "uefa", "rank": 16 },
+  { "id": 9, "name": "Spain", "code": "es", "confed": "uefa", "rank": 3 },
+  { "id": 10, "name": "Portugal", "code": "pt", "confed": "uefa", "rank": 7 },
+  { "id": 11, "name": "Japan", "code": "jp", "confed": "afc", "rank": 18 },
+  { "id": 12, "name": "South Korea", "code": "kr", "confed": "afc", "rank": 23 },
+  { "id": 13, "name": "Morocco", "code": "ma", "confed": "caf", "rank": 13 },
+  { "id": 14, "name": "Senegal", "code": "sn", "confed": "caf", "rank": 20 },
+  { "id": 15, "name": "Australia", "code": "au", "confed": "afc", "rank": 25 },
+  { "id": 16, "name": "New Zealand", "code": "nz", "confed": "ofc", "rank": 103 }
+]

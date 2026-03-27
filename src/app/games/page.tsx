@@ -58,6 +58,14 @@ const GAMES = [
     cta: 'Analyse a screenshot →',
     available: true,
   },
+  {
+    href: '/games/dream-squad',
+    icon: '⚽',
+    name: 'Dream XI',
+    desc: 'Build your tactical masterpiece. Pick a unique nation for every position on the pitch.',
+    cta: 'Build your squad →',
+    available: true,
+  },
 ]
 
 export default function GamesPage() {
@@ -66,7 +74,7 @@ export default function GamesPage() {
       <Navbar />
       <Ticker segments={[
         '🎮 Fan games · WC2026 · KickoffTo',
-        'Score predictor · Bracket battle · Daily trivia · Chaos engine',
+        'Score predictor · Bracket battle · Daily trivia · Chaos engine · Dream XI',
       ]} />
       <main style={{ maxWidth: 900, margin: '0 auto', padding: '32px 16px 100px' }}>
 
