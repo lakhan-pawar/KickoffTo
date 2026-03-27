@@ -29,20 +29,42 @@ function getTimeLeft(): TimeLeft {
 }
 
 export function Countdown() {
+  const [mounted, setMounted] = useState(false)
   const [time, setTime] = useState<TimeLeft>(getTimeLeft())
   const [flash, setFlash] = useState(false)
 
   useEffect(() => {
+    setMounted(true)
     const interval = setInterval(() => {
       const newTime = getTimeLeft()
-      if (newTime.seconds !== time.seconds) {
-        setFlash(true)
-        setTimeout(() => setFlash(false), 150)
-      }
-      setTime(newTime)
+      setTime(prev => {
+        if (newTime.seconds !== prev.seconds) {
+          setFlash(true)
+          setTimeout(() => setFlash(false), 150)
+        }
+        return newTime
+      })
     }, 1000)
     return () => clearInterval(interval)
-  }, [time.seconds])
+  }, [])
+
+  if (!mounted) {
+    return (
+      <div style={{ textAlign: 'center', opacity: 0.5 }}>
+        <p style={{ fontSize: 10, fontWeight: 700, color: 'var(--green)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 12 }}>
+          Tournament begins
+        </p>
+        <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap' }}>
+          {[1, 2, 3, 4].map(i => (
+            <div key={i} style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 12, padding: '16px 12px', minWidth: 72, textAlign: 'center' }}>
+              <div style={{ fontFamily: 'var(--font-display)', fontSize: 40, fontWeight: 900, color: 'var(--text)', lineHeight: 1 }}>--</div>
+            </div>
+          ))}
+        </div>
+        <p style={{ fontSize: 12, color: 'var(--text-3)', marginTop: 12 }}>Loading countdown...</p>
+      </div>
+    )
+  }
 
   if (time.started) {
     return (
@@ -90,15 +112,18 @@ export function Countdown() {
             borderRadius: 12, padding: '16px 12px',
             minWidth: 72, textAlign: 'center',
           }}>
-            <div style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: 40, fontWeight: 900,
-              fontVariantNumeric: 'tabular-nums',
-              color: unit.label === 'Secs' && flash
-                ? 'var(--green)' : 'var(--text)',
-              lineHeight: 1,
-              transition: 'color 0.1s',
-            }}>
+            <div 
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: 40, fontWeight: 900,
+                fontVariantNumeric: 'tabular-nums',
+                color: unit.label === 'Secs' && flash
+                  ? 'var(--green)' : 'var(--text)',
+                lineHeight: 1,
+                transition: 'color 0.1s',
+              }}
+              suppressHydrationWarning={true}
+            >
               {String(unit.value).padStart(2, '0')}
             </div>
             <div style={{

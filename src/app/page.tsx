@@ -56,7 +56,7 @@ const FEATURED_MATCHES = [
   {
     id: 'usa-mar', homeTeam: { name: 'USA', shortName: 'USA', flag: '🇺🇸', code: 'USA',
       kitColors: { home: ['#b22234'], away: ['#fff'] } },
-    awayTeam: { name: 'Morocco', shortName: 'Morocco', flag: '🇲🇦', code: 'MA',
+    awayTeam: { name: 'Morocco', shortName: 'Morocco', flag: '🇲🇦', code: 'MAR',
       kitColors: { home: ['#c1272d'], away: ['#fff'] } },
     homeScore: null, awayScore: null, status: 'scheduled',
     round: 'Group A', venue: 'SoFi Stadium',

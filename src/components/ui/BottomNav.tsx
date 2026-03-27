@@ -13,7 +13,7 @@ const TABS = [
 export function BottomNav() {
   const pathname = usePathname()
   return (
-    <nav style={{
+    <nav className="mobile-nav" style={{
       position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 100,
       height: 56,
       background: 'rgba(8,8,8,0.98)',

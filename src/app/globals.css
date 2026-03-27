@@ -393,3 +393,28 @@ body {
 @media (max-width: 1024px) {
   .desktop-only { display: none !important; }
 }
+
+/* -- Menu Overlay Animations ----------------------- */
+@keyframes menuFadeIn {
+  from { opacity: 0; backdrop-filter: blur(0px); }
+  to   { opacity: 1; backdrop-filter: blur(24px); }
+}
+
+@keyframes menuSlideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+.menu-item-enter {
+  animation: menuSlideUp 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+/* -- Responsive Navigation ------------------------- */
+@media (min-width: 1025px) {
+  .mobile-nav { display: none !important; }
+  .desktop-nav { display: flex !important; }
+}
+@media (max-width: 1024px) {
+  .desktop-nav { display: none !important; }
+  .mobile-nav { display: flex !important; }
+}
