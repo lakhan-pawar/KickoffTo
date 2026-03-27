@@ -9,6 +9,7 @@ const CARD_FLAGS: Record<string,string> = {
   messi:'ar', mbappe:'fr', davies:'ca', bellingham:'gb-eng',
   vinicius:'br', yamal:'es', wirtz:'de', pulisic:'us',
   hakimi:'ma', haaland:'no', kane:'gb-eng', salah:'eg',
+  ronaldo:'pt', neymar:'br', osimhen:'ng', son:'kr',
 }
 
 const FEATURED_PLAYERS = [
@@ -36,6 +37,14 @@ const FEATURED_PLAYERS = [
     club: 'Bayern Munich', rarity: 'silver', kitColor: '#cf081f' },
   { id: 'salah', name: 'M. Salah', flag: '🇪🇬', position: 'ATT',
     club: 'Liverpool', rarity: 'gold', kitColor: '#c8102e' },
+  { id: 'ronaldo', name: 'C. Ronaldo', flag: '🇵🇹', position: 'ATT',
+    club: 'Al-Nassr', rarity: 'rainbow', kitColor: '#ffdd00' },
+  { id: 'neymar', name: 'Neymar Jr', flag: '🇧🇷', position: 'ATT',
+    club: 'Al-Hilal', rarity: 'gold', kitColor: '#2546ad' },
+  { id: 'osimhen', name: 'V. Osimhen', flag: '🇳🇬', position: 'ATT',
+    club: 'Galatasaray', rarity: 'gold', kitColor: '#c1272d' },
+  { id: 'son', name: 'Son H.M.', flag: '🇰🇷', position: 'ATT',
+    club: 'Tottenham', rarity: 'gold', kitColor: '#ffffff' },
 ]
 
 const RARITY_BADGE: Record<string, { color: string; label: string }> = {

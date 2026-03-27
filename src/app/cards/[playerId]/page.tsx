@@ -145,8 +145,62 @@ function getMockPlayer(playerId: string) {
       stats: { goals: 4, assists: 12, appearances: 68, rating: 7.9 },
       rarity: 'silver', number: 2,
     },
+    'ronaldo': {
+      id: 'ronaldo', name: 'C. Ronaldo', fullName: 'Cristiano Ronaldo',
+      position: 'ATT', nationality: 'Portugal', flag: '🇵🇹',
+      club: 'Al-Nassr', photo: null,
+      kitColors: ['#ffdd00', '#2546ad'],
+      stats: { goals: 8, assists: 2, appearances: 8, rating: 8.4 },
+      rarity: 'rainbow',
+      number: 7,
+      highlights: ['All-time international top scorer', '5-time Ballon d\'Or winner', 'Euro 2016 Champion'],
+    },
+    'neymar': {
+      id: 'neymar', name: 'Neymar Jr', fullName: 'Neymar Jr',
+      position: 'ATT', nationality: 'Brazil', flag: '🇧🇷',
+      club: 'Al-Hilal', photo: null,
+      kitColors: ['#2546ad', '#ffffff'],
+      stats: { goals: 4, assists: 6, appearances: 6, rating: 8.2 },
+      rarity: 'gold',
+      number: 10,
+    },
+    'son': {
+      id: 'son', name: 'Son H.M.', fullName: 'Son Heung-min',
+      position: 'ATT', nationality: 'South Korea', flag: '🇰🇷',
+      club: 'Tottenham', photo: null,
+      kitColors: ['#ffffff', '#132257'],
+      stats: { goals: 3, assists: 2, appearances: 5, rating: 7.9 },
+      rarity: 'gold',
+      number: 7,
+    },
+    'osimhen': {
+      id: 'osimhen', name: 'V. Osimhen', fullName: 'Victor Osimhen',
+      position: 'ATT', nationality: 'Nigeria', flag: '🇳🇬',
+      club: 'Galatasaray', photo: null,
+      kitColors: ['#c1272d', '#006233'],
+      stats: { goals: 5, assists: 1, appearances: 4, rating: 8.0 },
+      rarity: 'gold',
+      number: 9,
+    },
   }
-  return players[playerId] || null
+
+  const staticPlayer = players[playerId]
+  if (staticPlayer) return staticPlayer
+
+  // Dynamic fallback for any other ID
+  return {
+    id: playerId,
+    name: playerId.charAt(0).toUpperCase() + playerId.slice(1),
+    fullName: playerId.toUpperCase(),
+    position: 'TBD',
+    nationality: 'World',
+    flag: '🌍',
+    club: 'TBD',
+    photo: null,
+    kitColors: ['#333', '#111'],
+    stats: { goals: 0, assists: 0, appearances: 0, rating: 0 },
+    rarity: 'silver',
+  }
 }
 
 export default async function CardPage({ params }: PageProps) {
