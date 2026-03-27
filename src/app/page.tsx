@@ -53,6 +53,15 @@ const FEATURED_MATCHES = [
     round: 'Group H', venue: 'Estadio Azteca',
     kickoff: '2026-06-14T18:00:00Z',
   },
+  {
+    id: 'usa-mar', homeTeam: { name: 'USA', shortName: 'USA', flag: '🇺🇸', code: 'USA',
+      kitColors: { home: ['#b22234'], away: ['#fff'] } },
+    awayTeam: { name: 'Morocco', shortName: 'Morocco', flag: '🇲🇦', code: 'MA',
+      kitColors: { home: ['#c1272d'], away: ['#fff'] } },
+    homeScore: null, awayScore: null, status: 'scheduled',
+    round: 'Group A', venue: 'SoFi Stadium',
+    kickoff: '2026-06-12T19:00:00Z',
+  },
 ]
 
 const GAMES = [
@@ -140,8 +149,8 @@ export default async function HomePage() {
             <Link href="/schedule" className="section-more">See all →</Link>
           </div>
           <div className="h-scroll">
-            {FEATURED_MATCHES.map(match => (
-              <div key={match.id} style={{ width: 210 }}>
+            {FEATURED_MATCHES.map((match, idx) => (
+              <div key={match.id} style={{ width: 210 }} className={idx === 4 ? 'desktop-only' : ''}>
                 {/* Inline match card for horizontal scroll */}
                 <div style={{
                   borderRadius: 16, overflow: 'hidden',
