@@ -188,10 +188,14 @@ function getMockPlayer(playerId: string) {
   if (staticPlayer) return staticPlayer
 
   // Dynamic fallback for any other ID
+  const cleanName = playerId.split('-').map(word => 
+    word.charAt(0).toUpperCase() + word.slice(1)
+  ).join(' ')
+
   return {
     id: playerId,
-    name: playerId.charAt(0).toUpperCase() + playerId.slice(1),
-    fullName: playerId.toUpperCase(),
+    name: cleanName,
+    fullName: cleanName,
     position: 'TBD',
     nationality: 'World',
     flag: '🌍',
@@ -205,7 +209,8 @@ function getMockPlayer(playerId: string) {
 
 export default async function CardPage({ params }: PageProps) {
   const { playerId } = await params
-  const player = getMockPlayer(playerId)
+  const decodedId = decodeURIComponent(playerId)
+  const player = getMockPlayer(decodedId)
 
   if (!player) {
     return (
@@ -220,7 +225,7 @@ export default async function CardPage({ params }: PageProps) {
             Card not found
           </h1>
           <p style={{ fontSize: 13, color: 'var(--text-2)', marginBottom: 20 }}>
-            We don&apos;t have a card for &ldquo;{playerId}&rdquo; yet.
+            We don&apos;t have a card for &ldquo;{decodedId}&rdquo; yet.
             Full squad cards arrive June 11 when squads are confirmed.
           </p>
           <Link href="/cards" style={{

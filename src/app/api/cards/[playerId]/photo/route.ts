@@ -26,10 +26,14 @@ export async function GET(
   { params }: { params: Promise<{ playerId: string }> }
 ) {
   const { playerId } = await params
-  const playerName = PLAYER_NAMES[playerId]
-
+  const decodedId = decodeURIComponent(playerId)
+  
+  // Try mapping first, then fallback to cleaned ID
+  let playerName = PLAYER_NAMES[decodedId.toLowerCase()]
   if (!playerName) {
-    return NextResponse.json({ cutout: null, thumb: null })
+    playerName = decodedId.split('-').map(word => 
+      word.charAt(0).toUpperCase() + word.slice(1)
+    ).join(' ')
   }
 
   const photos = await getPlayerPhotos(playerName)

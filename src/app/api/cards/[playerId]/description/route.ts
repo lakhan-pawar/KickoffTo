@@ -9,9 +9,10 @@ export async function GET(
   { params }: { params: Promise<{ playerId: string }> }
 ) {
   const { playerId } = await params
+  const decodedId = decodeURIComponent(playerId)
 
   // Check permanent cache first
-  const cacheKey = CACHE_KEYS.cardDescription(playerId)
+  const cacheKey = CACHE_KEYS.cardDescription(decodedId)
   const cached = await getCache<{ description: string }>(cacheKey)
   if (cached) return NextResponse.json(cached)
 
@@ -21,7 +22,7 @@ export async function GET(
     'davies': 'Alphonso Davies (Canada)',
   }
 
-  const playerName = playerNames[playerId] ?? playerId
+  const playerName = playerNames[decodedId.toLowerCase()] ?? decodedId
 
   try {
     const description = await groqChat(
